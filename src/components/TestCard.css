@@ -1,0 +1,75 @@
+.card {
+  display: grid;
+  grid-template-columns: 1fr 1.618fr;
+  box-shadow: 0 0.25rem 0.5rem rgb(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  max-width: 32rem;
+}
+
+.media {
+  border-radius: 0.25rem 0 0 0.25rem;
+  overflow: hidden;
+}
+
+.main {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+
+  h2 {
+    font-weight: bold;
+    color: #634832;
+  }
+  p {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: #967259;
+  }
+}
+
+.score {
+  display: flex;
+  align-items: center;
+
+  color: #dbc1ac;
+
+  em {
+    color: gray;
+    font-size: 0.8625rem;
+    font-style: italic;
+    padding-left: 0.25rem;
+  }
+}
+
+.card-icon-container {
+  display: flex;
+  position: absolute;
+  right: 0.25rem;
+  justify-content: center;
+  align-items: center;
+  color: lightgray;
+  font-size: 1.25em;
+  padding: 0.5rem;
+  border-left: 0.1rem solid lightgray;
+}
+
+.settings-icon {
+  top: 0.25rem;
+  color: #dbc1ac;
+  border-bottom: 0.1rem solid lightgray;
+  border-radius: 0 0 0 0.25rem;
+}
+
+.favorite-icon {
+  bottom: 0.25rem;
+  color: lightgray;
+  border-top: 0.1rem solid lightgray;
+  border-radius: 0.25rem 0 0 0;
+}
+
+.favorite {
+  color: darkred;
+}
