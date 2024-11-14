@@ -1,0 +1,86 @@
+.card {
+  display: grid;
+  grid-template-columns: 1fr 1.618fr auto;
+  box-shadow: 0 0.25rem 0.5rem rgb(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+  max-width: 32rem;
+}
+
+.media {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  border-radius: 0.25rem 0 0 0.25rem;
+  overflow: hidden;
+  aspect-ratio: 1/1;
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+
+  h2 {
+    font-weight: bold;
+    color: #634832;
+  }
+  p {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: #967259;
+  }
+}
+
+.date {
+  font-size: 0.625rem;
+  font-style: italic;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+
+  color: #dbc1ac;
+
+  em {
+    color: gray;
+    font-size: 0.8625rem;
+    font-style: italic;
+    padding-left: 0.25rem;
+  }
+}
+
+.interactive-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  color: lightgray;
+  font-size: 1.25em;
+  cursor: pointer;
+}
+
+.settings-icon {
+  color: #dbc1ac;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 0.1rem solid lightgray;
+  border-left: 0.1rem solid lightgray;
+  border-radius: 0 0 0 0.25rem;
+}
+
+.favorite-icon {
+  color: lightgray;
+  padding: 0.5rem 0.75rem;
+  border-top: 0.1rem solid lightgray;
+  border-left: 0.1rem solid lightgray;
+  border-radius: 0.25rem 0 0 0;
+}
+
+.favorite {
+  color: darkred;
+}
