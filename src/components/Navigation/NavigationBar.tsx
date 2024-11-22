@@ -48,7 +48,13 @@ const NavigationBar = ({ user }: Props) => {
       <div className="icon-container">
         <NavLink to="/settings">
           <img
-            src={user?.photoURL ? user.photoURL : ""}
+            src={
+              user?.photoURL
+                ? user.photoURL
+                : `https://eu.ui-avatars.com/api/?name=${
+                    user?.email || ""
+                  }&size=150`
+            }
             alt="profile-picture"
             style={{ marginRight: `${windowSize.width > 520 ? "1rem" : "0"}` }}
           />

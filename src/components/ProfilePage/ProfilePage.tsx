@@ -23,8 +23,16 @@ const ProfilePage = () => {
       exit={{ opacity: 0 }}
     >
       <div className="page">
-        <h2>Profile of {auth.currentUser?.displayName || "User"} </h2>
-        <img src={auth.currentUser?.photoURL || ""} alt="User Avatar" />
+        <h2>Profile of {auth.currentUser?.displayName || "Anonymous"} </h2>
+        <img
+          src={
+            auth.currentUser?.photoURL ||
+            `https://eu.ui-avatars.com/api/?name=${
+              auth.currentUser?.email || ""
+            }&size=150`
+          }
+          alt="User Avatar"
+        />
         <p>ID: {auth.currentUser?.uid}</p>
         <p>Email: {auth.currentUser?.email}</p>
         <p>{auth.currentUser?.phoneNumber || "No phone number provided"}</p>
