@@ -1,8 +1,20 @@
 import { motion } from "framer-motion";
 import { auth } from "../../config/firebase";
+import { useNavigate } from "react-router-dom";
 import "./ProfilePage.css";
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await auth.signOut();
+      navigate("/"); // Redirect to the login page after logout
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -11,11 +23,14 @@ const ProfilePage = () => {
       exit={{ opacity: 0 }}
     >
       <div className="page">
-        <h2>Profile of {auth.currentUser?.displayName} </h2>
-        <img src={auth.currentUser?.photoURL || ""} alt="" />
-        <p>ID : {auth.currentUser?.uid}</p>
-        <p>Email : {auth.currentUser?.email}</p>
-        <p>{auth.currentUser?.phoneNumber}</p>
+        <h2>Profile of {auth.currentUser?.displayName || "User"} </h2>
+        <img src={auth.currentUser?.photoURL || ""} alt="User Avatar" />
+        <p>ID: {auth.currentUser?.uid}</p>
+        <p>Email: {auth.currentUser?.email}</p>
+        <p>{auth.currentUser?.phoneNumber || "No phone number provided"}</p>
+        <button onClick={handleLogout} className="logout-button">
+          Logout
+        </button>
       </div>
     </motion.div>
   );
