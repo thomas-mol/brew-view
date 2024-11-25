@@ -3,14 +3,14 @@ import {
   faGear,
   faHeart as fullHeart,
 } from "@fortawesome/free-solid-svg-icons";
-import Review from "../interfaces/review";
+import Review from "../../interfaces/review";
 import "./ReviewCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import StarScore from "./Score/StarScore";
+import StarScore from "../Score/StarScore";
 import { useState } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
 import Skeleton from "react-loading-skeleton";
-import { TimestampToString } from "../utils/TimestampToString";
+import { TimestampToString } from "../../utils/TimestampToString";
 
 interface Props {
   review: Review;

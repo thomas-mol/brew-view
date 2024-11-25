@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "firebase/auth";
+import "./LoginPage.css";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -42,12 +43,16 @@ const LoginPage = () => {
     }
   };
 
+  const toggleSignUp = () => {
+    setIsSignUp((prev) => !prev);
+  };
+
   return (
-    <div style={{ padding: "20px", maxWidth: "400px", margin: "auto" }}>
+    <div className="login-form">
       <h1>{isSignUp ? "Sign Up" : "Login"}</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
       {message && <p style={{ color: "green" }}>{message}</p>}
-      <form onSubmit={handleFormSubmit} style={{ marginBottom: "20px" }}>
+      <form onSubmit={handleFormSubmit}>
         <div>
           <label htmlFor="email">Email:</label>
           <input
@@ -56,7 +61,6 @@ const LoginPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            style={{ display: "block", width: "100%", marginBottom: "10px" }}
           />
         </div>
         <div>
@@ -67,42 +71,14 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            style={{ display: "block", width: "100%", marginBottom: "10px" }}
           />
         </div>
-        <button
-          type="submit"
-          style={{ display: "block", width: "100%", marginBottom: "10px" }}
-        >
-          {isSignUp ? "Sign Up" : "Login"}
-        </button>
+        <button type="submit">{isSignUp ? "Sign Up" : "Login"}</button>
       </form>
-      <button
-        onClick={() => setIsSignUp((prev) => !prev)}
-        style={{
-          display: "block",
-          width: "100%",
-          marginBottom: "10px",
-          backgroundColor: "#ccc",
-          padding: "10px",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
+      <button className="login-button" onClick={toggleSignUp}>
         {isSignUp ? "Already have an account? Login" : "Create an account"}
       </button>
-      <button
-        onClick={handlePasswordReset}
-        style={{
-          display: "block",
-          width: "100%",
-          backgroundColor: "#f0ad4e",
-          color: "#fff",
-          padding: "10px",
-          border: "none",
-          cursor: "pointer",
-        }}
-      >
+      <button className="password-reset-button" onClick={handlePasswordReset}>
         Reset Password
       </button>
     </div>

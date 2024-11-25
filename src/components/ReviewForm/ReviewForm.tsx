@@ -1,15 +1,16 @@
-import "./ReviewForm.css";
 import * as Coffee from "../../constants/enums";
 import { z } from "zod";
-import { FieldValues, useForm } from "react-hook-form";
+import { Controller, FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import APIClient from "../../services/apiClient";
 import Swal from "sweetalert2";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { auth, storage } from "../../config/firebase";
 import { useState } from "react";
 import { v4 } from "uuid";
 import {
+  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -17,6 +18,12 @@ import {
   Slider,
   TextField,
 } from "@mui/material";
+import { MobileDatePicker } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from "dayjs";
+import { styled } from "@mui/material/styles";
+import "./ReviewForm.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   title: z
@@ -26,14 +33,27 @@ const schema = z.object({
   type: z.nativeEnum(Coffee.Type),
   location: z.string(),
   score: z.number().min(1).max(5),
-  date: z.date(),
+  date: z.instanceof(dayjs as unknown as typeof Dayjs),
 });
 
 type ReviewFormData = z.infer<typeof schema>;
 
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
+
 const ReviewForm = () => {
   const {
     register,
+    control,
     handleSubmit,
     reset,
     formState: { errors, isValid },
@@ -72,13 +92,16 @@ const ReviewForm = () => {
 
   const api = new APIClient("reviews");
 
+  const navigate = useNavigate();
+
   const onSubmit = (data: FieldValues) => {
     try {
       const userId = auth.currentUser?.uid;
 
       const dataWithUserId = {
         ...data,
-        userId: userId,
+        uid: userId,
+        date: data.date.toDate(),
       };
 
       if (imageUpload) {
@@ -112,6 +135,7 @@ const ReviewForm = () => {
       });
 
       reset();
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -119,66 +143,102 @@ const ReviewForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* Title */}
       <div className="input-container">
         <TextField
           {...register("title")}
-          id="title"
+          id="Title"
           label="Title"
           variant="outlined"
         />
       </div>
       {errors.title && <p>{errors.title.message}</p>}
 
-      {/* Roast */}
+      <div className="input-wrapper">
+        <div className="input-container">
+          <FormControl fullWidth>
+            <InputLabel id="roast-label">Roast</InputLabel>
+            <Select
+              {...register("roast")}
+              id="Roast"
+              label="Roast"
+              defaultValue={"Medium"}
+            >
+              {Object.values(Coffee.Roast).map((roast, index) => (
+                <MenuItem key={index} value={roast}>
+                  {roast}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+        <div className="input-container">
+          <FormControl fullWidth>
+            <InputLabel id="type-label">Type</InputLabel>
+            <Select
+              {...register("type")}
+              id="Type"
+              label="Type"
+              defaultValue={"Flat White"}
+            >
+              {Object.values(Coffee.Type).map((type, index) => (
+                <MenuItem key={index} value={type}>
+                  {type}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </div>
+      </div>
       <div className="input-container">
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Roast</InputLabel>
-          <Select
-            {...register("roast")}
-            id="roast"
-            label="Roast"
-            defaultValue={"Medium"}
-          >
-            {Object.values(Coffee.Roast).map((roast, index) => (
-              <MenuItem key={index} value={roast}>
-                {roast}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Button
+          component="label"
+          role={undefined}
+          variant="contained"
+          tabIndex={-1}
+          startIcon={<FontAwesomeIcon icon={faImage} />}
+        >
+          Upload Image
+          <VisuallyHiddenInput
+            type="file"
+            id="image"
+            accept="image/png, image/jpg, image/jpeg"
+            onChange={(event) => {
+              if (event.target.files) {
+                setImageUpload(event.target.files[0]);
+              }
+            }}
+          />
+        </Button>
       </div>
 
-      {/* Type */}
       <div className="input-container">
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Type</InputLabel>
-          <Select
-            {...register("type")}
-            id="type"
-            label="Type"
-            defaultValue={"Flat White"}
-          >
-            {Object.values(Coffee.Type).map((type, index) => (
-              <MenuItem key={index} value={type}>
-                {type}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <Controller
+          control={control}
+          name="date"
+          rules={{ required: "Date is required" }}
+          defaultValue={dayjs()}
+          render={({ field }) => {
+            return (
+              <MobileDatePicker
+                label="Date"
+                value={field.value}
+                inputRef={field.ref}
+                onChange={(date) => field.onChange(date)}
+              />
+            );
+          }}
+        />
       </div>
 
-      {/* Location */}
       <div className="input-container">
         <TextField
           {...register("location")}
-          id="location"
+          id="Location"
           label="Location"
           variant="outlined"
         />
       </div>
 
-      {/* Score */}
       <div className="input-container slider">
         <label htmlFor="score">Score</label>
         <Slider
@@ -192,34 +252,16 @@ const ReviewForm = () => {
         />
       </div>
 
-      {/* Date */}
       <div className="input-container">
-        <label htmlFor="date">Date</label>
-        <input
-          {...register("date", { valueAsDate: true })}
-          id="date"
-          type="date"
-        />
+        <Button
+          disabled={!isValid}
+          variant="outlined"
+          type="submit"
+          size="large"
+        >
+          Add Review
+        </Button>
       </div>
-
-      {/* Image */}
-      <div className="input-container">
-        <label htmlFor="image">Image</label>
-        <input
-          type="file"
-          id="image"
-          accept="image/png, image/jpg, image/jpeg"
-          onChange={(event) => {
-            if (event.target.files) {
-              setImageUpload(event.target.files[0]);
-            }
-          }}
-        />
-      </div>
-
-      <button disabled={!isValid} type="submit">
-        Add Review
-      </button>
     </form>
   );
 };

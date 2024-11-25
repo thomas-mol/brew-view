@@ -2,9 +2,14 @@ form {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 1rem;
+  padding: 1.25rem 1rem;
   margin: 0 auto;
-  max-width: 720px;
+  max-width: 640px;
+}
+
+.input-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .input-container {
@@ -27,13 +32,6 @@ button {
   border-radius: 0.75rem;
 }
 
-#score {
-}
-
-#image {
-  padding: 1.25rem 1rem;
-}
-
-#date {
-  width: 100%;
+button {
+  min-height: 3rem;
 }

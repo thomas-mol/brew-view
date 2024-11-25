@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import Review from "../interfaces/review";
-import APIClient from "../services/apiClient";
+import APIClient, { Filters } from "../services/apiClient";
 
 const apiClient = new APIClient<Review>("reviews");
 
-const useReviews = () => {
+const useReviews = (options?: Filters<Review>) => {
   return useQuery<Review[], Error>({
-    queryKey: ["reviews"],
-    queryFn: () => apiClient.getAll(),
+    queryKey: ["reviews", options],
+    queryFn: () => apiClient.getAll(options),
     staleTime: 60 * 1_000, // 1 min,
   });
 };

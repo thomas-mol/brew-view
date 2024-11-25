@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import ReviewForm from "./ReviewForm";
+import ReviewForm from "../../components/ReviewForm/ReviewForm";
+import "./AddReviewPage.css";
 
 const AddReviewPage = () => {
   return (

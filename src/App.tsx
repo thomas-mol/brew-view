@@ -1,6 +1,6 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./config/firebase";
-import LoginPage from "./components/LoginPage/LoginPage";
+import LoginPage from "./pages/Login/LoginPage";
 import Layout from "./Layout";
 
 const App = () => {

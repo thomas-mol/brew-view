@@ -1,9 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
-import HomePage from "../components/HomePage";
-import AddReviewPage from "../components/AddReviewPage/AddReviewPage";
-import FavoritesPage from "../components/FavoritesPage/FavoritesPage";
+import HomePage from "../pages/Home/HomePage";
+import AddReviewPage from "../pages/Add/AddReviewPage";
+import FavoritesPage from "../pages/Favorites/FavoritesPage";
 import App from "../App";
-import ProfilePage from "../components/ProfilePage/ProfilePage";
+import ProfilePage from "../pages/Profile/ProfilePage";
 
 const router = createBrowserRouter([
   {

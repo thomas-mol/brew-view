@@ -8,19 +8,32 @@ import {
 } from "firebase/firestore";
 import { db } from "../config/firebase";
 
+export type Filters<T> = Partial<{
+  [K in keyof T]: T[K];
+}>;
+
 class APIClient<T extends DocumentData> {
   collectionRef: string;
 
-  constructor(collection: string) {
+  constructor(collection: string, private defaultFilters: Filters<T> = {}) {
     this.collectionRef = collection;
   }
 
-  async getAll(): Promise<T[]> {
+  async getAll(options?: Filters<T>): Promise<T[]> {
     const querySnapshot = await getDocs(collection(db, this.collectionRef));
-    const data: T[] = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...(doc.data() as T),
-    }));
+    const data: T[] = querySnapshot.docs
+      .map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as T),
+      }))
+      .filter((item) => {
+        const filters = { ...this.defaultFilters, ...options };
+        return Object.entries(filters).every(([key, value]) => {
+          if (value === undefined || value === null || value === "")
+            return true;
+          return item[key as keyof T] === value;
+        });
+      });
     return data;
   }
 

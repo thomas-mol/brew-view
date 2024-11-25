@@ -1,0 +1,26 @@
+.login-form {
+  padding: 1.25rem;
+  max-width: 400px;
+  margin: auto;
+
+  input,
+  button {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.625rem;
+  }
+
+  .login-button,
+  .password-reset-button {
+    width: 100%;
+    background-color: #ccc;
+    padding: 1.25rem;
+    border: none;
+    cursor: pointer;
+  }
+
+  .password-reset-button {
+    background-color: #f0ad4e;
+    color: #fff;
+  }
+}

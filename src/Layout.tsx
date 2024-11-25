@@ -1,4 +1,4 @@
-import NavigationBar from "./components/Navigation/NavigationBar";
+import NavigationBar from "./components/NavigationBar/NavigationBar";
 import { Outlet } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { auth } from "./config/firebase";

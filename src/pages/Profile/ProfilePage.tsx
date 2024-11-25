@@ -9,7 +9,7 @@ const ProfilePage = () => {
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      navigate("/"); // Redirect to the login page after logout
+      navigate("/");
     } catch (error) {
       console.error("Error logging out:", error);
     }
