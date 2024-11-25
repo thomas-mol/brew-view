@@ -27,7 +27,9 @@ const ReviewFilter = ({ onChange }: Props) => {
         disablePortal
         options={roastOptions}
         value={roast}
-        onChange={(event, value) => setRoast(value as Filters<Review>["roast"])}
+        onChange={(_event, value) =>
+          setRoast(value as Filters<Review>["roast"])
+        }
         renderInput={(params) => (
           <TextField {...params} label="Roast" variant="outlined" />
         )}
@@ -37,7 +39,7 @@ const ReviewFilter = ({ onChange }: Props) => {
         disablePortal
         options={typeOptions}
         value={type}
-        onChange={(event, value) => setType(value as Filters<Review>["type"])}
+        onChange={(_event, value) => setType(value as Filters<Review>["type"])}
         renderInput={(params) => (
           <TextField {...params} label="Type" variant="outlined" />
         )}
