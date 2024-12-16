@@ -5,9 +5,10 @@ import "./ReviewGrid.css";
 
 interface Props {
   reviews: Review[] | undefined;
+  favorites: string[];
 }
 
-const ReviewGrid = ({ reviews }: Props) => {
+const ReviewGrid = ({ reviews, favorites }: Props) => {
   //#region  Framer-motion code
   const container = {
     hidden: { opacity: 1, scale: 1 },
@@ -41,11 +42,15 @@ const ReviewGrid = ({ reviews }: Props) => {
             variants={item}
             transition={{ duration: 0.4 }}
           >
-            <ReviewCard key={review.id} review={review} />
+            <ReviewCard
+              key={review.id}
+              review={review}
+              isFavorite={favorites.includes(review.id) ? true : false}
+            />
           </motion.div>
         ))
       ) : (
-        <div className="not-found">No reviews match these criteria..</div>
+        <div className="not-found">No reviews found..</div>
       )}
     </motion.div>
   );

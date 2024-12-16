@@ -7,23 +7,41 @@
 }
 
 .media {
-  display: flex;
   height: 100%;
-  width: 100%;
+  max-width: 100%;
   border-radius: 0.25rem 0 0 0.25rem;
   overflow: hidden;
-  aspect-ratio: 1/1;
   justify-content: center;
   align-items: center;
+  aspect-ratio: 1 / 1;
+}
+
+@media (max-width: 768px) {
+  .media {
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
 
 .main {
   display: flex;
   position: relative;
+  justify-content: space-between;
   flex-direction: column;
-  justify-content: center;
   gap: 0.5rem;
-  padding: 0 1rem;
+  padding: 0.75rem 1rem;
+
+  h2,
+  p {
+    display: -webkit-box;
+    line-clamp: 1;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 
   h2 {
     font-weight: bold;
@@ -39,17 +57,19 @@
 .date {
   font-size: 0.625rem;
   font-style: italic;
+  color: gray;
 }
 
 .score {
   display: flex;
-  align-items: center;
-
+  align-items: end;
+  font-size: 1.25rem;
   color: #dbc1ac;
+  overflow: hidden;
 
   em {
     color: gray;
-    font-size: 0.8625rem;
+    font-size: 0.75rem;
     font-style: italic;
     padding-left: 0.25rem;
   }
@@ -60,7 +80,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  color: lightgray;
+  color: #d3d3d3;
   font-size: 1.25em;
   cursor: pointer;
 }
@@ -68,16 +88,16 @@
 .settings-icon {
   color: #dbc1ac;
   padding: 0.5rem 0.75rem;
-  border-bottom: 0.1rem solid lightgray;
-  border-left: 0.1rem solid lightgray;
+  border-bottom: 0.1rem solid #d3d3d3;
+  border-left: 0.1rem solid #d3d3d3;
   border-radius: 0 0 0 0.25rem;
 }
 
 .favorite-icon {
-  color: lightgray;
+  color: #d3d3d3;
   padding: 0.5rem 0.75rem;
-  border-top: 0.1rem solid lightgray;
-  border-left: 0.1rem solid lightgray;
+  border-top: 0.1rem solid #d3d3d3;
+  border-left: 0.1rem solid #d3d3d3;
   border-radius: 0.25rem 0 0 0;
 }
 

@@ -23,7 +23,9 @@ const ProfilePage = () => {
       exit={{ opacity: 0 }}
     >
       <div className="page">
-        <h2>Profile of {auth.currentUser?.displayName || "Anonymous"} </h2>
+        <h2 className="page-title">
+          Profile of {auth.currentUser?.displayName || "Anonymous"}{" "}
+        </h2>
         <img
           src={
             auth.currentUser?.photoURL ||

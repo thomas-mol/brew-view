@@ -1,0 +1,13 @@
+.select {
+  display: grid;
+  align-content: center;
+  padding: 1rem 0.75rem;
+  background-color: #f2f2f2;
+  z-index: 1;
+}
+
+.option-text {
+  margin-left: auto;
+  color: #8c8c8c;
+  font-size: small;
+}

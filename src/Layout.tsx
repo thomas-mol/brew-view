@@ -11,7 +11,7 @@ const Layout = () => {
       <div id="main">
         <div className="home-heading">
           <h1>
-            <em>Brew</em>View
+            <b>Brew</b>View
           </h1>
         </div>
         <AnimatePresence>

@@ -10,38 +10,44 @@ interface Props {
 }
 
 const ReviewFilter = ({ onChange }: Props) => {
-  const [roast, setRoast] = useState<Filters<Review>["roast"]>();
   const roastOptions: string[] = Object.values(Coffee.Roast);
-
-  const [type, setType] = useState<Filters<Review>["type"]>();
   const typeOptions: string[] = Object.values(Coffee.Type);
 
-  useEffect(() => {
-    onChange({ roast, type });
-  }, [roast, type]);
+  const [roast, setRoast] = useState<Filters<Review>["roast"]>();
+  const [type, setType] = useState<Filters<Review>["type"]>();
+
+  const handleRoastChange = (value: string | null) => {
+    const newRoast = value as Filters<Review>["roast"];
+    setRoast(newRoast);
+    onChange({ roast: newRoast, type });
+  };
+
+  const handleTypeChange = (value: string | null) => {
+    const newType = value as Filters<Review>["type"];
+    setType(newType);
+    onChange({ roast, type: newType });
+  };
 
   return (
     <div className="filter">
       <Autocomplete
-        color="red"
         disablePortal
-        options={roastOptions}
-        value={roast}
-        onChange={(_event, value) =>
-          setRoast(value as Filters<Review>["roast"])
-        }
+        options={typeOptions}
+        value={type || null}
+        onChange={(_e, value) => handleTypeChange(value)}
         renderInput={(params) => (
-          <TextField {...params} label="Roast" variant="outlined" />
+          <TextField {...params} label="Type" variant="outlined" />
         )}
       />
 
       <Autocomplete
+        color="red"
         disablePortal
-        options={typeOptions}
-        value={type}
-        onChange={(_event, value) => setType(value as Filters<Review>["type"])}
+        options={roastOptions}
+        value={roast || null}
+        onChange={(_e, value) => handleRoastChange(value)}
         renderInput={(params) => (
-          <TextField {...params} label="Type" variant="outlined" />
+          <TextField {...params} label="Roast" variant="outlined" />
         )}
       />
     </div>

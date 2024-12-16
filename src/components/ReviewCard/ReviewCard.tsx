@@ -1,28 +1,54 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as emptyHeart } from "@fortawesome/free-regular-svg-icons";
 import {
-  faGear,
+  faPenToSquare,
   faHeart as fullHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import Review from "../../interfaces/review";
-import "./ReviewCard.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarScore from "../Score/StarScore";
-import { useState } from "react";
-import "react-loading-skeleton/dist/skeleton.css";
 import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { TimestampToString } from "../../utils/TimestampToString";
+import "./ReviewCard.css";
+import { auth, db } from "../../config/firebase";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 
 interface Props {
   review: Review;
+  isFavorite: boolean;
 }
 
-const ReviewCard = ({ review }: Props) => {
-  const [favorite, setFavorite] = useState(false);
+const ReviewCard = ({ review, isFavorite }: Props) => {
+  const navigate = useNavigate();
+  const [favorite, setFavorite] = useState(isFavorite);
   const [imageLoaded, setImageLoaded] = useState(false);
 
   function onLoad() {
     setImageLoaded(true);
   }
+
+  // Put this block of code in the API class / Utility class
+  const toggleFavorite = async (id: string) => {
+    const userDoc = doc(db, "users", id);
+
+    if (favorite) {
+      setFavorite(!favorite);
+      await updateDoc(userDoc, {
+        favorites: arrayRemove(review.id),
+      }).then(() =>
+        console.log(`Removed review ${review.id} from user's favorites`)
+      );
+    } else {
+      setFavorite(!favorite);
+      await updateDoc(userDoc, {
+        favorites: arrayUnion(review.id),
+      }).then(() =>
+        console.log(`Added review ${review.id} to user's favorites`)
+      );
+    }
+  };
 
   return (
     <div className="card">
@@ -36,20 +62,30 @@ const ReviewCard = ({ review }: Props) => {
         {!imageLoaded && <Skeleton height={200} width={200} />}
       </div>
       <div className="main">
-        <div className="score">
-          <StarScore score={review.score} /> <em>{review.score}</em>
-        </div>
         <div className="labels">
           <h2>{review.title}</h2>
-          <p className="roast">{review.roast}</p>
+          <p className="type">
+            {review.type + " / " + review.roast + " Roast"}
+          </p>
+        </div>
+        <div className="score">
+          <StarScore score={review.score} /> <em>{review.score}</em>
         </div>
         <div className="date">{TimestampToString(review.date)}</div>
       </div>
       <div className="interactive-icons">
-        <div className="settings-icon">
-          <FontAwesomeIcon icon={faGear} />
+        {/* Edit Icon */}
+        <div
+          onClick={() => navigate(`/review/${review.id}`)}
+          className="settings-icon"
+        >
+          <FontAwesomeIcon icon={faPenToSquare} />
         </div>
-        <div onClick={() => setFavorite(!favorite)} className="favorite-icon">
+        {/* Favorite Icon */}
+        <div
+          onClick={() => toggleFavorite(auth.currentUser?.uid || " ")}
+          className="favorite-icon"
+        >
           {favorite ? (
             <FontAwesomeIcon icon={fullHeart} className="favorite" />
           ) : (

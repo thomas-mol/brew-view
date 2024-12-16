@@ -4,3 +4,15 @@
   align-items: center;
   padding: 4rem 0;
 }
+
+.filter-sorter-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  border-bottom: 0.05rem solid #8c8c8c;
+}
+
+@media (min-width: 768px) {
+  .filter-sorter-container {
+    grid-template-columns: 2fr 1fr;
+  }
+}

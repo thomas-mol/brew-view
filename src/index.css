@@ -32,7 +32,7 @@ h1 {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(0.25rem);
 
-  em {
+  b {
     color: #dbc1ac;
   }
 }
@@ -40,10 +40,20 @@ h1 {
 .page {
   display: grid;
   place-items: center;
-  padding: 2rem;
   gap: 1rem;
+}
+
+.page-title {
+  width: 100%;
+  padding-top: 1rem;
+  text-align: center;
+  font-size: 1.25rem;
 }
 
 .margin-div {
   height: 4rem;
+}
+
+.icon-align {
+  vertical-align: text-bottom;
 }

@@ -2,13 +2,9 @@ import * as Coffee from "../../constants/enums";
 import { z } from "zod";
 import { Controller, FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import APIClient from "../../services/apiClient";
-import Swal from "sweetalert2";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { auth, storage } from "../../config/firebase";
+import { auth } from "../../config/firebase";
 import { useState } from "react";
-import { v4 } from "uuid";
 import {
   Button,
   FormControl,
@@ -20,10 +16,13 @@ import {
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import { styled } from "@mui/material/styles";
 import "./ReviewForm.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router-dom";
+import { faCheckCircle } from "@fortawesome/free-regular-svg-icons";
+import VisuallyHiddenInput from "../../utils/components/VisuallyHiddenInput";
+import { useAddReview } from "../../hooks/useReviews";
+import Review from "../../interfaces/review";
+import { marks } from "../../utils/objects/marks";
 
 const schema = z.object({
   title: z
@@ -38,25 +37,12 @@ const schema = z.object({
 
 type ReviewFormData = z.infer<typeof schema>;
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
-
 const ReviewForm = () => {
   const {
     register,
     control,
     handleSubmit,
-    reset,
-    formState: { errors, isValid },
+    formState: { isValid },
   } = useForm<ReviewFormData>({
     defaultValues: {
       roast: Coffee.Roast.MEDIUM,
@@ -67,75 +53,24 @@ const ReviewForm = () => {
 
   const [imageUpload, setImageUpload] = useState<File>();
 
-  const marks = [
-    {
-      value: 1,
-      label: "1⭐",
-    },
-    {
-      value: 2,
-      label: "2⭐",
-    },
-    {
-      value: 3,
-      label: "3⭐",
-    },
-    {
-      value: 4,
-      label: "4⭐",
-    },
-    {
-      value: 5,
-      label: "5⭐",
-    },
-  ];
-
-  const api = new APIClient("reviews");
-
-  const navigate = useNavigate();
+  const { mutate } = useAddReview();
 
   const onSubmit = (data: FieldValues) => {
     try {
-      const userId = auth.currentUser?.uid;
+      const userId = auth.currentUser?.uid || "";
 
       const dataWithUserId = {
         ...data,
         uid: userId,
         date: data.date.toDate(),
-      };
+      } as Review;
 
+      // To add: Image size and type validation
       if (imageUpload) {
-        const imageRef = ref(storage, `images/${v4()}`);
-
-        uploadBytes(imageRef, imageUpload)
-          .then(() => {
-            console.log("Image uploaded!" + imageRef);
-
-            getDownloadURL(imageRef)
-              .then((downloadURL) => {
-                api.post({ photo_url: downloadURL, ...dataWithUserId });
-              })
-              .catch((error) => {
-                console.error("Error getting download URL: ", error);
-              });
-          })
-          .catch((error) => {
-            console.error("Error uploading image: ", error);
-          });
+        mutate({ image: imageUpload, toAdd: dataWithUserId });
       } else {
         console.log("No image provided.");
-        api.post(dataWithUserId);
       }
-
-      Swal.fire({
-        title: "Review Added",
-        icon: "success",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-
-      reset();
-      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -144,14 +79,21 @@ const ReviewForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="input-container">
-        <TextField
-          {...register("title")}
-          id="Title"
-          label="Title"
-          variant="outlined"
+        <Controller
+          control={control}
+          name="title"
+          render={({ fieldState }) => (
+            <TextField
+              {...register("title")}
+              id="Title"
+              error={!!fieldState?.error}
+              helperText={fieldState?.error?.message}
+              label="Title"
+              variant="outlined"
+            />
+          )}
         />
       </div>
-      {errors.title && <p>{errors.title.message}</p>}
 
       <div className="input-wrapper">
         <div className="input-container">
@@ -161,7 +103,7 @@ const ReviewForm = () => {
               {...register("roast")}
               id="Roast"
               label="Roast"
-              defaultValue={"Medium"}
+              defaultValue={Coffee.Roast.MEDIUM}
             >
               {Object.values(Coffee.Roast).map((roast, index) => (
                 <MenuItem key={index} value={roast}>
@@ -178,7 +120,7 @@ const ReviewForm = () => {
               {...register("type")}
               id="Type"
               label="Type"
-              defaultValue={"Flat White"}
+              defaultValue={Coffee.Type.FLAT_WHITE}
             >
               {Object.values(Coffee.Type).map((type, index) => (
                 <MenuItem key={index} value={type}>
@@ -195,7 +137,9 @@ const ReviewForm = () => {
           role={undefined}
           variant="contained"
           tabIndex={-1}
-          startIcon={<FontAwesomeIcon icon={faImage} />}
+          endIcon={
+            <FontAwesomeIcon icon={imageUpload ? faCheckCircle : faImage} />
+          }
         >
           Upload Image
           <VisuallyHiddenInput
@@ -205,10 +149,23 @@ const ReviewForm = () => {
             onChange={(event) => {
               if (event.target.files) {
                 setImageUpload(event.target.files[0]);
+                console.log(event.target.files);
               }
             }}
           />
         </Button>
+        {imageUpload && (
+          <p>
+            {imageUpload.name}{" "}
+            <Button
+              onClick={() => {
+                setImageUpload(undefined);
+              }}
+            >
+              x
+            </Button>
+          </p>
+        )}
       </div>
 
       <div className="input-container">
