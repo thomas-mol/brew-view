@@ -1,9 +1,9 @@
+import { Autocomplete, TextField } from "@mui/material";
+import { useState } from "react";
 import * as Coffee from "../../constants/enums";
-import { useEffect, useState } from "react";
 import Review from "../../interfaces/review";
 import { Filters } from "../../services/apiClient";
 import "./ReviewFilter.css";
-import { Autocomplete, TextField } from "@mui/material";
 
 interface Props {
   onChange: (filters: Filters<Review>) => void;

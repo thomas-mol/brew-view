@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { auth } from "../../config/firebase";
 import {
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   sendPasswordResetEmail,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
+import { useState } from "react";
+import { auth } from "../../config/firebase";
 import "./LoginPage.css";
 
 const LoginPage = () => {
