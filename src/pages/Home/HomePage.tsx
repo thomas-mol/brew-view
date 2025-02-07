@@ -1,7 +1,7 @@
-import { motion } from "framer-motion";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Oval } from "react-loader-spinner";
+import AnimatedPage from "../../components/AnimatedPage";
 import ReviewFilter from "../../components/ReviewFilter/ReviewFilter";
 import ReviewGrid from "../../components/ReviewGrid/ReviewGrid";
 import ReviewSorter from "../../components/ReviewSorter/ReviewSorter";
@@ -13,7 +13,6 @@ import Review from "../../interfaces/review";
 import { Filters } from "../../services/apiClient";
 import sortReviews from "../../utils/sortReviews";
 import styles from "./HomePage.module.css";
-import AnimatedPage from "../../components/AnimatedPage";
 
 const HomePage = () => {
   const [filters, setFilters] = useState<Filters<Review>>({});

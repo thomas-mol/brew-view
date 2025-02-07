@@ -15,7 +15,7 @@ const EditReviewPage = () => {
   }
   const { data: review, isLoading, error } = useReview(id);
 
-  if (error || !review) return navigate("/404");
+  if (error || !review) navigate("/404");
 
   return (
     <>
@@ -29,7 +29,7 @@ const EditReviewPage = () => {
             <TextField
               id="standard-read-only-input"
               label="Title"
-              defaultValue={review.title}
+              defaultValue={review?.title}
               variant="standard"
               slotProps={{
                 input: {
@@ -40,7 +40,7 @@ const EditReviewPage = () => {
             <TextField
               id="standard-read-only-input"
               label="Roast"
-              defaultValue={review.roast}
+              defaultValue={review?.roast}
               variant="standard"
               slotProps={{
                 input: {
@@ -51,7 +51,7 @@ const EditReviewPage = () => {
             <TextField
               id="standard-read-only-input"
               label="Location"
-              defaultValue={review.location}
+              defaultValue={review?.location}
               variant="standard"
               slotProps={{
                 input: {
@@ -62,7 +62,7 @@ const EditReviewPage = () => {
             <TextField
               id="standard-read-only-input"
               label="Type"
-              defaultValue={review.type}
+              defaultValue={review?.type}
               variant="standard"
               slotProps={{
                 input: {
@@ -70,7 +70,7 @@ const EditReviewPage = () => {
                 },
               }}
             />
-            <p>Score: {review.score}</p>
+            <p>Score: {review?.score}</p>
             <Button onClick={() => navigate("/")} variant="contained">
               Back
             </Button>

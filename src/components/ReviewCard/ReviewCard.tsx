@@ -13,7 +13,7 @@ import Review from "../../interfaces/review";
 import CustomImage from "../CustomImage";
 import StarScore from "../Score/StarScore";
 import styles from "./ReviewCard.module.css";
-import { timestampToString } from "../../utils/timestampToString";
+import { timestampToString } from "../../utils/TimestampToString";
 
 interface Props {
   review: Review;
