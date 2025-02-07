@@ -8,14 +8,19 @@ A personal React-based project where users can add reviews and pictures of their
 - Firebase / Firestore
 - Vercel
 - Vite
+- Framer Motion
 
 ## Todo List
-Style:
-- [ ] Login page
-- [ ] Sign up page
-- [ ] Profile page
 
-Add:
+Style:
+- [ ] Log in / Sign up page
+- [ ] Profile page
+- [ ] Add style variables
+- [ ] Page transitions
+
+Function:
 - [ ] Error handling for adding reviews
 - [ ] Favorites functionality
+- [ ] Edit reviews
+- [ ] Pop up modals for (un)successful uploading
   

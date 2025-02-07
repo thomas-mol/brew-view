@@ -1,17 +1,19 @@
-import useReviews from "../../hooks/useReviews";
-import ReviewFilter from "../../components/ReviewFilter/ReviewFilter";
-import { Oval } from "react-loader-spinner";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { Oval } from "react-loader-spinner";
+import ReviewFilter from "../../components/ReviewFilter/ReviewFilter";
+import ReviewGrid from "../../components/ReviewGrid/ReviewGrid";
+import ReviewSorter from "../../components/ReviewSorter/ReviewSorter";
+import { auth } from "../../config/firebase";
+import { SortingOptions } from "../../constants/enums";
+import { useReviews } from "../../hooks/useReviews";
+import { useUser } from "../../hooks/useUsers";
 import Review from "../../interfaces/review";
 import { Filters } from "../../services/apiClient";
-import "./HomePage.css";
-import ReviewGrid from "../../components/ReviewGrid/ReviewGrid";
-import { useUser } from "../../hooks/useUsers";
-import { auth } from "../../config/firebase";
-import ReviewSorter from "../../components/ReviewSorter/ReviewSorter";
-import { SortingOptions } from "../../constants/enums";
 import sortReviews from "../../utils/sortReviews";
+import styles from "./HomePage.module.css";
+import AnimatedPage from "../../components/AnimatedPage";
 
 const HomePage = () => {
   const [filters, setFilters] = useState<Filters<Review>>({});
@@ -19,18 +21,15 @@ const HomePage = () => {
     SortingOptions.DATE_DESC
   );
 
-  const { data: reviews, isLoading } = useReviews(filters);
-  const { data: user } = useUser(auth.currentUser?.uid || "");
+  const [userAuth, loadingAuth] = useAuthState(auth);
+  const { data: user, isLoading: userLoading } = useUser(userAuth?.uid || "");
 
+  const { data: reviews, isLoading: reviewsLoading } = useReviews(filters);
   const sortedReviews = reviews ? sortReviews(reviews, sortingOpt) : [];
 
   return (
-    <motion.div
-      initial={{ opacity: 0.5, y: 5 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <div className="filter-sorter-container">
+    <AnimatedPage>
+      <div className={styles.container}>
         <ReviewFilter
           onChange={(filter) => {
             setFilters(filter);
@@ -42,14 +41,14 @@ const HomePage = () => {
           }}
         />
       </div>
-      {isLoading ? (
-        <div className="loading-indicator">
+      {reviewsLoading || loadingAuth || userLoading ? (
+        <div className={styles.loading}>
           <Oval color="grey" strokeWidth={5} secondaryColor="lightgrey" />
         </div>
       ) : (
         <ReviewGrid reviews={sortedReviews} favorites={user?.favorites || []} />
       )}
-    </motion.div>
+    </AnimatedPage>
   );
 };
 

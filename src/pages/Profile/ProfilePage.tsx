@@ -1,10 +1,19 @@
-import { motion } from "framer-motion";
-import { auth } from "../../config/firebase";
+import { Button } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./ProfilePage.css";
+import AnimatedPage from "../../components/AnimatedPage";
+import { auth } from "../../config/firebase";
+import CustomImage from "../../components/CustomImage";
+import styles from "./ProfilePage.module.css";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const [user, setUser] = useState(auth.currentUser);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(setUser);
+    return () => unsubscribe();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -16,33 +25,23 @@ const ProfilePage = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      exit={{ opacity: 0 }}
-    >
-      <div className="page">
-        <h2 className="page-title">
-          Profile of {auth.currentUser?.displayName || "Anonymous"}{" "}
-        </h2>
-        <img
+    <AnimatedPage title={`Profile of ${user?.displayName || "Anonymous"}`}>
+      <div className={styles.container}>
+        <CustomImage
           src={
-            auth.currentUser?.photoURL ||
+            user?.photoURL ||
             `https://eu.ui-avatars.com/api/?name=${
               auth.currentUser?.email || ""
             }&size=150`
           }
-          alt="User Avatar"
         />
-        <p>ID: {auth.currentUser?.uid}</p>
-        <p>Email: {auth.currentUser?.email}</p>
-        <p>{auth.currentUser?.phoneNumber || "No phone number provided"}</p>
-        <button onClick={handleLogout} className="logout-button">
+        <p>ID: {user?.uid}</p>
+        <p>Email: {user?.email}</p>
+        <Button onClick={handleLogout} variant="contained">
           Logout
-        </button>
+        </Button>
       </div>
-    </motion.div>
+    </AnimatedPage>
   );
 };
 

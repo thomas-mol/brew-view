@@ -45,7 +45,7 @@
 
   h2 {
     font-weight: bold;
-    color: #634832;
+    color: var(--color-primary);
   }
   p {
     font-size: 0.75rem;
@@ -64,7 +64,7 @@
   display: flex;
   align-items: end;
   font-size: 1.25rem;
-  color: #dbc1ac;
+  color: var(--color-secondary);
   overflow: hidden;
 
   em {
@@ -75,7 +75,7 @@
   }
 }
 
-.interactive-icons {
+.actionButtonsContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -83,24 +83,26 @@
   color: #d3d3d3;
   font-size: 1.25em;
   cursor: pointer;
-}
 
-.settings-icon {
-  color: #dbc1ac;
-  padding: 0.5rem 0.75rem;
-  border-bottom: 0.1rem solid #d3d3d3;
-  border-left: 0.1rem solid #d3d3d3;
-  border-radius: 0 0 0 0.25rem;
-}
+  .button {
+    padding: 0.5rem 0.75rem;
+  }
 
-.favorite-icon {
-  color: #d3d3d3;
-  padding: 0.5rem 0.75rem;
-  border-top: 0.1rem solid #d3d3d3;
-  border-left: 0.1rem solid #d3d3d3;
-  border-radius: 0.25rem 0 0 0;
-}
+  .settingsButton {
+    color: var(--color-secondary);
+    border-bottom: 0.1rem solid #d3d3d3;
+    border-left: 0.1rem solid #d3d3d3;
+    border-radius: 0 0 0 0.25rem;
+  }
 
-.favorite {
-  color: darkred;
+  .favoriteButton {
+    color: #d3d3d3;
+    border-top: 0.1rem solid #d3d3d3;
+    border-left: 0.1rem solid #d3d3d3;
+    border-radius: 0.25rem 0 0 0;
+
+    .favorite {
+      color: darkred;
+    }
+  }
 }

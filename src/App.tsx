@@ -1,12 +1,24 @@
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./config/firebase";
-import LoginPage from "./pages/Login/LoginPage";
-import Layout from "./Layout";
+import { AnimatePresence } from "framer-motion";
+import { Outlet } from "react-router-dom";
+import NavigationBar from "./components/NavigationBar/NavigationBar";
+import styles from "./App.module.css";
 
 const App = () => {
-  const [user] = useAuthState(auth);
-
-  return <>{user ? <Layout /> : <LoginPage />}</>;
+  return (
+    <>
+      <div className={styles.main}>
+        <div className={styles.header}>
+          <h1>
+            <b>Brew</b>View
+          </h1>
+        </div>
+        <AnimatePresence>
+          <Outlet />
+        </AnimatePresence>
+      </div>
+      <NavigationBar />;
+    </>
+  );
 };
 
 export default App;

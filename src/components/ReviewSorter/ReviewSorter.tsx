@@ -8,11 +8,50 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { SortingOptions } from "../../constants/enums";
-import "./ReviewSorter.css";
+import styles from "./ReviewSorter.module.css";
 
 interface Props {
   onChange: (sort: any) => void;
 }
+
+const sortingOptions = [
+  {
+    label: "Date",
+    value: SortingOptions.DATE_DESC,
+    text: "(New to Old)",
+    icon: <ArrowDownward />,
+  },
+  {
+    label: "Date",
+    value: SortingOptions.DATE_ASC,
+    text: "(Old to New)",
+    icon: <ArrowUpward />,
+  },
+  {
+    label: "Score",
+    value: SortingOptions.SCORE_DESC,
+    text: "(High to Low)",
+    icon: <ArrowDownward />,
+  },
+  {
+    label: "Score",
+    value: SortingOptions.SCORE_ASC,
+    text: "(Low to High)",
+    icon: <ArrowUpward />,
+  },
+  {
+    label: "Roast",
+    value: SortingOptions.ROAST_ASC,
+    text: "(Light to Dark)",
+    icon: <ArrowDownward />,
+  },
+  {
+    label: "Roast",
+    value: SortingOptions.ROAST_DESC,
+    text: "(Dark to Light)",
+    icon: <ArrowUpward />,
+  },
+];
 
 const ReviewSorter = ({ onChange }: Props) => {
   const [sortOrder, setSortOrder] = useState<SortingOptions>(
@@ -27,7 +66,7 @@ const ReviewSorter = ({ onChange }: Props) => {
   }
 
   return (
-    <div className="select">
+    <div className={styles.select}>
       <FormControl fullWidth>
         <InputLabel id="order-label">Order By</InputLabel>
         <Select
@@ -37,66 +76,23 @@ const ReviewSorter = ({ onChange }: Props) => {
           label="Order By"
           onChange={(e) => handleChange(e)}
         >
-          <MenuItem value={SortingOptions.DATE_DESC}>
-            Date{"  "}
-            <em className="option-text">
-              (New to Old)
-              <ArrowDownward
-                style={{ fontSize: "medium", marginLeft: ".25rem" }}
-                className="icon-align"
-              />
-            </em>
-          </MenuItem>
-          <MenuItem value={SortingOptions.DATE_ASC}>
-            Date{"  "}
-            <em className="option-text">
-              (Old to New)
-              <ArrowUpward
-                style={{ fontSize: "medium", marginLeft: ".25rem" }}
-                className="icon-align"
-              />
-            </em>
-          </MenuItem>
-          <MenuItem value={SortingOptions.SCORE_DESC}>
-            Score{" "}
-            <em className="option-text">
-              (High to Low)
-              <ArrowDownward
-                style={{ fontSize: "medium", marginLeft: ".25rem" }}
-                className="icon-align"
-              />
-            </em>
-          </MenuItem>
-          <MenuItem value={SortingOptions.SCORE_ASC}>
-            Score{" "}
-            <em className="option-text">
-              (Low to High)
-              <ArrowUpward
-                style={{ fontSize: "medium", marginLeft: ".25rem" }}
-                className="icon-align"
-              />
-            </em>
-          </MenuItem>
-          <MenuItem value={SortingOptions.ROAST_ASC}>
-            Roast{" "}
-            <em className="option-text">
-              (Light to Dark)
-              <ArrowDownward
-                style={{ fontSize: "medium", marginLeft: ".25rem" }}
-                className="icon-align"
-              />
-            </em>
-          </MenuItem>
-          <MenuItem value={SortingOptions.ROAST_DESC}>
-            Roast{" "}
-            <em className="option-text">
-              (Dark to Light)
-              <ArrowUpward
-                style={{ fontSize: "medium", marginLeft: ".25rem" }}
-                className="icon-align"
-              />
-            </em>
-          </MenuItem>
+          {sortingOptions.map(({ label, value, text, icon }) => (
+            <MenuItem key={value} value={value}>
+              {label}
+              {"  "}
+              <em className={styles.option}>
+                {text}
+                {icon && (
+                  <span
+                    className="icon-align"
+                    style={{ fontSize: "medium", marginLeft: ".25rem" }}
+                  >
+                    {icon}
+                  </span>
+                )}
+              </em>
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </div>

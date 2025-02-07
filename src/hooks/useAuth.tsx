@@ -1,5 +1,5 @@
 import { User, onAuthStateChanged } from "firebase/auth";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { auth } from "../config/firebase";
 
 interface AuthContextType {
@@ -23,35 +23,45 @@ interface Props {
 }
 
 export function AuthProvider({ children }: Props) {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [authState, setAuthState] = useState<AuthContextType>({
+    currentUser: null,
+    isLoading: true,
+    isLoggedIn: false,
+  });
+
+  const initializeUser = useCallback(async (user: User | null) => {
+    setAuthState((prev) => ({ ...prev, isLoading: true }));
+    try {
+      if (user?.emailVerified) {
+        setAuthState({
+          currentUser: user,
+          isLoggedIn: true,
+          isLoading: false,
+        });
+      } else {
+        setAuthState({
+          currentUser: null,
+          isLoggedIn: false,
+          isLoading: false,
+        });
+      }
+    } catch (error) {
+      console.error("Error retrieving user:", error);
+      setAuthState((prev) => ({
+        ...prev,
+        isLoading: false,
+      }));
+    }
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, initializeUser);
     return unsubscribe;
-  }, []);
-
-  async function initializeUser(user: User | null) {
-    if (user) {
-      setCurrentUser({ ...user });
-      setIsLoggedIn(true);
-    } else {
-      setCurrentUser(null);
-      setIsLoggedIn(false);
-    }
-    setIsLoading(false);
-  }
-
-  const value = {
-    currentUser,
-    isLoggedIn,
-    isLoading,
-  };
+  }, [initializeUser]);
 
   return (
-    <AuthContext.Provider value={value}>
-      {!isLoading && children}
+    <AuthContext.Provider value={authState}>
+      {!authState.isLoading && children}
     </AuthContext.Provider>
   );
 }

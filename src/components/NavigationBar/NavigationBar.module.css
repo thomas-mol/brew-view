@@ -1,4 +1,4 @@
-.nav {
+.navigation {
   display: grid;
   position: fixed;
   bottom: 0;
@@ -13,40 +13,30 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.icon-container {
+.iconContainer {
   display: grid;
   place-items: center;
   max-height: 4rem;
   overflow: hidden;
 
-  * {
-    max-height: 4rem;
-  }
-
-  a {
-    width: 80%;
+  .link,
+  .active {
     display: flex;
+    width: 80%;
     justify-content: center;
     align-items: center;
     padding: 1rem;
     font-size: 1.25rem;
     border-radius: 1rem;
+    transition: all 0.3s ease-in-out;
+  }
 
+  .link {
     color: #8c8c8c;
-    transition: all 0.3s ease-in-out;
-  }
-  a.active {
-    color: #634832;
-    background-color: #dbc1ac;
-
-    img {
-      outline: 0.2rem solid #dbc1ac;
-    }
   }
 
-  img {
-    height: 1.5rem;
-    border-radius: 50%;
-    transition: all 0.3s ease-in-out;
+  .active {
+    color: var(--color-primary);
+    background-color: var(--color-secondary);
   }
 }

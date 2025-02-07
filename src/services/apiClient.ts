@@ -5,17 +5,18 @@ import {
   doc,
   getDoc,
   getDocs,
+  setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { db, storage } from "../config/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { v4 } from "uuid";
+import { db, storage } from "../config/firebase";
 
 export type Filters<T> = Partial<{
   [K in keyof T]: T[K];
 }>;
 
-class APIClient<T extends DocumentData> {
+class APIClient<T extends { id?: string } & DocumentData> {
   collectionRef: string;
 
   constructor(collection: string, private defaultFilters: Filters<T> = {}) {
@@ -52,17 +53,25 @@ class APIClient<T extends DocumentData> {
       const data: T = documentSnapshot.data() as T;
       return data;
     } else {
-      throw new Error("Document not found.");
+      throw new Error(`Document with id: ${id} not found.`);
     }
   }
 
-  async post(toAdd: T): Promise<T> {
+  async post(toAdd: T, id?: string): Promise<T> {
     try {
-      await addDoc(collection(db, this.collectionRef), { ...toAdd });
+      if (id?.trim()) {
+        await setDoc(doc(db, this.collectionRef, id), toAdd, { merge: true });
+        console.log("Document added with id:", id);
+        return { ...toAdd, id: id };
+      } else {
+        const docRef = await addDoc(collection(db, this.collectionRef), toAdd);
+        console.log("Document added with id:", docRef.id);
+        return { ...toAdd, id: docRef.id };
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error adding document", error);
+      throw error;
     }
-    return toAdd;
   }
 
   async postWithImage(toAdd: T, imageFile: File): Promise<T> {
@@ -72,6 +81,7 @@ class APIClient<T extends DocumentData> {
       console.log("Image uploaded!" + imageRef);
 
       const downloadUrl = await getDownloadURL(imageRef);
+
       const documentWithUrl = {
         photo_url: downloadUrl,
         ...toAdd,
@@ -80,9 +90,9 @@ class APIClient<T extends DocumentData> {
         collection(db, this.collectionRef),
         documentWithUrl
       );
-      console.log("Document added with id:", docRef.id);
 
-      return documentWithUrl;
+      console.log("Document added with id:", docRef.id);
+      return { ...documentWithUrl, id: docRef.id };
     } catch (error) {
       console.log("Error uploading image or document:", error);
       throw error;
@@ -91,6 +101,7 @@ class APIClient<T extends DocumentData> {
 
   async update(toUpdate: T) {
     try {
+      if (!toUpdate.id) throw new Error("Document ID is required for update.");
       await updateDoc(doc(db, this.collectionRef, toUpdate.id), {
         ...toUpdate,
       });

@@ -3,7 +3,7 @@ import { useState } from "react";
 import * as Coffee from "../../constants/enums";
 import Review from "../../interfaces/review";
 import { Filters } from "../../services/apiClient";
-import "./ReviewFilter.css";
+import styles from "./ReviewFilter.module.css";
 
 interface Props {
   onChange: (filters: Filters<Review>) => void;
@@ -29,7 +29,7 @@ const ReviewFilter = ({ onChange }: Props) => {
   };
 
   return (
-    <div className="filter">
+    <div className={styles.filter}>
       <Autocomplete
         disablePortal
         options={typeOptions}
@@ -41,7 +41,6 @@ const ReviewFilter = ({ onChange }: Props) => {
       />
 
       <Autocomplete
-        color="red"
         disablePortal
         options={roastOptions}
         value={roast || null}

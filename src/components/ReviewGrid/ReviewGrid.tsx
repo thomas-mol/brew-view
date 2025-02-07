@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import Review from "../../interfaces/review";
 import ReviewCard from "../ReviewCard/ReviewCard";
-import "./ReviewGrid.css";
+import styles from "./ReviewGrid.module.css";
 
 interface Props {
   reviews: Review[] | undefined;
@@ -15,11 +15,15 @@ const ReviewGrid = ({ reviews, favorites }: Props) => {
     visible: {
       opacity: 1,
       scale: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.1,
+      },
     },
   };
 
   const item = {
-    hidden: { opacity: 0.5 },
+    hidden: { opacity: 0.3 },
     visible: {
       opacity: 1,
     },
@@ -29,7 +33,7 @@ const ReviewGrid = ({ reviews, favorites }: Props) => {
 
   return (
     <motion.div
-      className="grid"
+      className={styles.grid}
       variants={container}
       initial="hidden"
       animate="visible"
@@ -45,12 +49,12 @@ const ReviewGrid = ({ reviews, favorites }: Props) => {
             <ReviewCard
               key={review.id}
               review={review}
-              isFavorite={favorites.includes(review.id) ? true : false}
+              isFavorite={favorites.includes(review.id)}
             />
           </motion.div>
         ))
       ) : (
-        <div className="not-found">No reviews found..</div>
+        <div className={styles.notFound}>No reviews found..</div>
       )}
     </motion.div>
   );

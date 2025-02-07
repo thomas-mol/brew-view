@@ -1,25 +1,55 @@
 import { createBrowserRouter } from "react-router-dom";
-import HomePage from "../pages/Home/HomePage";
-import AddReviewPage from "../pages/Add/AddReviewPage";
-import FavoritesPage from "../pages/Favorites/FavoritesPage";
 import App from "../App";
-import ProfilePage from "../pages/Profile/ProfilePage";
+import AddReviewPage from "../pages/Add/AddReviewPage";
 import EditReviewPage from "../pages/Edit/EditReviewPage";
-import { NotFoundPage } from "../pages/404/NotFoundPage";
+import FavoritesPage from "../pages/Favorites/FavoritesPage";
+import HomePage from "../pages/Home/HomePage";
+import LoginPage from "../pages/Login/LoginPage";
+import NotFoundPage from "../pages/NotFound/NotFoundPage";
+import ProfilePage from "../pages/Profile/ProfilePage";
+import TestPage from "../pages/TestPage/TestPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
-      { index: true, element: <HomePage /> },
-      { path: "add", element: <AddReviewPage /> },
-      { path: "review/:id", element: <EditReviewPage /> },
-      { path: "favorites", element: <FavoritesPage /> },
-      { path: "settings", element: <ProfilePage /> },
-      { path: "*", element: <NotFoundPage /> },
+      {
+        index: true,
+        element: <HomePage />,
+      },
+      {
+        path: "add",
+        element: <AddReviewPage />,
+      },
+      {
+        path: "favorites",
+        element: <FavoritesPage />,
+      },
+      {
+        path: "profile",
+        element: <ProfilePage />,
+      },
+      {
+        path: "review/:id",
+        element: <EditReviewPage />,
+      },
+      {
+        path: "test",
+        element: <TestPage />,
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />,
+      },
     ],
   },
+  { path: "login", element: <LoginPage /> },
 ]);
 
 export default router;

@@ -1,3 +1,5 @@
+/* #region Minimal Reset CSS */
+
 *,
 *::before,
 *::after {
@@ -33,3 +35,17 @@ li {
 a {
   text-decoration: none;
 }
+
+/* #endregion */
+
+/* #region Global CSS & Variables */
+
+:root {
+  --color-primary: #634832;
+  --color-secondary: #dbc1ac;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Nunito Sans", sans-serif;
+}
+
+/* #endregion */

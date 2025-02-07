@@ -9,7 +9,7 @@ interface Review {
   date: Timestamp;
   roast: string;
   score: number;
-  photo_url: string;
+  photo_url?: string;
 }
 
 export default Review;

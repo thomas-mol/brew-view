@@ -1,66 +1,60 @@
-import { NavLink } from "react-router-dom";
-import { User } from "firebase/auth";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart,
   faHouse,
   faSquarePlus,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import "./NavigationBar.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { NavLink } from "react-router-dom";
 import useWindowSize from "../../utils/useWindowSize";
+import styles from "./NavigationBar.module.css";
 
-interface Props {
-  user: User | null;
-}
+const Links = [
+  {
+    name: "Home",
+    ref: "/",
+    icon: faHouse,
+  },
+  {
+    name: "Add",
+    ref: "/add",
+    icon: faSquarePlus,
+  },
+  {
+    name: "Favorites",
+    ref: "/favorites",
+    icon: faHeart,
+  },
+  {
+    name: "Profile",
+    ref: "/profile",
+    icon: faUser,
+  },
+];
 
-const NavigationBar = ({ user }: Props) => {
+const NavigationBar = () => {
   const windowSize = useWindowSize();
 
   return (
-    <div className="nav">
-      <div className="icon-container">
-        <NavLink to="/">
-          <FontAwesomeIcon
-            icon={faHouse}
-            style={{ marginRight: `${windowSize.width > 520 ? "1rem" : "0"}` }}
-          />
-          {windowSize.width > 520 && "Home"}
-        </NavLink>
-      </div>
-      <div className="icon-container">
-        <NavLink to="/add" className="add-btn">
-          <FontAwesomeIcon
-            icon={faSquarePlus}
-            style={{ marginRight: `${windowSize.width > 520 ? "1rem" : "0"}` }}
-          />
-          {windowSize.width > 520 && "Add"}
-        </NavLink>
-      </div>
-      <div className="icon-container">
-        <NavLink to="/favorites">
-          <FontAwesomeIcon
-            icon={faHeart}
-            style={{ marginRight: `${windowSize.width > 520 ? "1rem" : "0"}` }}
-          />
-          {windowSize.width > 520 && "Favorites"}
-        </NavLink>
-      </div>
-      <div className="icon-container">
-        <NavLink to="/settings">
-          <img
-            src={
-              user?.photoURL
-                ? user.photoURL
-                : `https://eu.ui-avatars.com/api/?name=${
-                    user?.email || ""
-                  }&size=150`
+    <div className={styles.navigation}>
+      {Links.map((link, index) => (
+        <div className={styles.iconContainer} key={index}>
+          <NavLink
+            to={link.ref}
+            className={({ isActive }) =>
+              isActive ? styles.active : styles.link
             }
-            alt="profile-picture"
-            style={{ marginRight: `${windowSize.width > 520 ? "1rem" : "0"}` }}
-          />
-          {windowSize.width > 520 && "Profile"}
-        </NavLink>
-      </div>
+          >
+            <FontAwesomeIcon
+              icon={link.icon}
+              style={{
+                marginRight: `${windowSize.width > 520 ? "1rem" : "0"}`,
+              }}
+            />
+            {windowSize.width > 520 && link.name}
+          </NavLink>
+        </div>
+      ))}
     </div>
   );
 };
