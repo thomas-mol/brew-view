@@ -54,6 +54,7 @@ const ReviewForm = () => {
   });
 
   const [imageUpload, setImageUpload] = useState<File>();
+  const [resetImageInput, setResetImageInput] = useState(false);
 
   const handleCropImage = (croppedFile: File) => {
     setImageUpload(croppedFile);
@@ -87,6 +88,9 @@ const ReviewForm = () => {
         score: 1,
         date: dayjs(),
       });
+
+      setImageUpload(undefined);
+      setResetImageInput(true);
     } catch (error) {
       console.error("Error adding review:", error);
     }
@@ -188,7 +192,10 @@ const ReviewForm = () => {
         )}
       />
 
-      <CropInput onCropComplete={handleCropImage} />
+      <CropInput
+        onCropComplete={handleCropImage}
+        resetInput={resetImageInput}
+      />
 
       <Button
         disabled={!isValid}

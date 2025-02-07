@@ -12,9 +12,10 @@ import styles from "./CropInput.module.css";
 
 interface Props {
   onCropComplete: (file: File) => void;
+  resetInput: boolean;
 }
 
-const CropInput = ({ onCropComplete }: Props) => {
+const CropInput = ({ onCropComplete, resetInput }: Props) => {
   const [showCropper, setShowCropper] = useState(false);
 
   const imageRef = useRef<HTMLImageElement>(null);
@@ -35,6 +36,14 @@ const CropInput = ({ onCropComplete }: Props) => {
       canvasPreview(imageRef.current, previewCanvasRef.current, completedCrop);
     }
   }, [showCropper, completedCrop]);
+
+  useEffect(() => {
+    if (resetInput) {
+      setImageSrc("");
+      setCrop(undefined);
+      setShowCropper(false);
+    }
+  }, [resetInput]);
 
   function onSelectFile(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.files && event.target.files.length > 0) {
