@@ -7,7 +7,6 @@ import HomePage from "../pages/Home/HomePage";
 import LoginPage from "../pages/Login/LoginPage";
 import NotFoundPage from "../pages/NotFound/NotFoundPage";
 import ProfilePage from "../pages/Profile/ProfilePage";
-import TestPage from "../pages/TestPage/TestPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 const router = createBrowserRouter([
@@ -38,10 +37,6 @@ const router = createBrowserRouter([
       {
         path: "review/:id",
         element: <EditReviewPage />,
-      },
-      {
-        path: "test",
-        element: <TestPage />,
       },
       {
         path: "*",
