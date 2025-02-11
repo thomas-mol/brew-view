@@ -23,37 +23,46 @@ class APIClient<T extends { id?: string } & DocumentData> {
     this.collectionRef = collection;
   }
 
+  private applyFilters(data: T[], filters: Filters<T>): T[] {
+    return data.filter((item) =>
+      Object.entries(filters).every(([key, value]) => {
+        if (value === undefined || value === null || value === "") return true;
+        return item[key as keyof T] === value;
+      })
+    );
+  }
+
   async getAll(options?: Filters<T>, ids?: string[]): Promise<T[]> {
-    const querySnapshot = await getDocs(collection(db, this.collectionRef));
-    const data: T[] = querySnapshot.docs
-      .map((doc) => ({
+    try {
+      const querySnapshot = await getDocs(collection(db, this.collectionRef));
+      let data: T[] = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...(doc.data() as T),
-      }))
-      .filter((item) => {
-        if (ids) {
-          return ids.includes(item.id);
-        }
-        return true;
-      })
-      .filter((item) => {
-        const filters = { ...this.defaultFilters, ...options };
-        return Object.entries(filters).every(([key, value]) => {
-          if (value === undefined || value === null || value === "")
-            return true;
-          return item[key as keyof T] === value;
-        });
-      });
-    return data;
+      }));
+
+      if (ids) {
+        data = data.filter((item) => item.id && ids.includes(item.id));
+      }
+
+      const filters = { ...this.defaultFilters, ...options };
+      return this.applyFilters(data, filters);
+    } catch (error) {
+      console.error("Error fetching documents:", error);
+      throw error;
+    }
   }
 
   async getById(id: string): Promise<T> {
-    const documentSnapshot = await getDoc(doc(db, this.collectionRef, id));
-    if (documentSnapshot.exists()) {
-      const data: T = documentSnapshot.data() as T;
-      return data;
-    } else {
-      throw new Error(`Document with id: ${id} not found.`);
+    try {
+      const documentSnapshot = await getDoc(doc(db, this.collectionRef, id));
+      if (documentSnapshot.exists()) {
+        return { id: documentSnapshot.id, ...(documentSnapshot.data() as T) };
+      } else {
+        throw new Error(`Document with id: ${id} not found.`);
+      }
+    } catch (error) {
+      console.error("Error fetching document:", error);
+      throw error;
     }
   }
 
