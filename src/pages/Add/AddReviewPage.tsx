@@ -1,16 +1,15 @@
 import { Timestamp } from "firebase/firestore";
 import AnimatedPage from "../../components/AnimatedPage";
-import ReviewForm, {
-  ReviewFormData,
-} from "../../components/ReviewForm/ReviewForm";
+import ReviewForm from "../../components/ReviewForm/ReviewForm";
 import { auth } from "../../config/firebase";
+import { TReviewSchema } from "../../constants/types";
 import { useAddReview } from "../../hooks/useReviews";
 import Review from "../../interfaces/review";
 
 const AddReviewPage = () => {
   const { mutate } = useAddReview();
 
-  const addReview = (data: ReviewFormData, image?: File) => {
+  const addReview = (data: TReviewSchema, image?: File) => {
     const userId = auth.currentUser?.uid;
     if (!userId) throw new Error("User not authenticated");
 
