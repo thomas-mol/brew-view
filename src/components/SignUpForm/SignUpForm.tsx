@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
+  FormControl,
   IconButton,
   InputAdornment,
+  InputLabel,
   OutlinedInput,
   TextField,
 } from "@mui/material";
@@ -124,29 +126,35 @@ const SignUpForm = () => {
         control={control}
         name="password"
         render={({ field, fieldState }) => (
-          <OutlinedInput
-            {...field}
-            type={showPassword ? "text" : "password"}
-            error={!!fieldState?.error}
-            label="Password"
-            disabled={isLoading}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label={
-                    showPassword ? "hide the password" : "display the password"
-                  }
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <FontAwesomeIcon icon={faEyeSlash} />
-                  ) : (
-                    <FontAwesomeIcon icon={faEye} />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
+          <FormControl>
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <OutlinedInput
+              {...field}
+              id="password"
+              type={showPassword ? "text" : "password"}
+              error={!!fieldState?.error}
+              label="Password"
+              disabled={isLoading}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={
+                      showPassword
+                        ? "hide the password"
+                        : "display the password"
+                    }
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <FontAwesomeIcon icon={faEyeSlash} />
+                    ) : (
+                      <FontAwesomeIcon icon={faEye} />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
         )}
       />
 
