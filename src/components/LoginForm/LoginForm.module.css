@@ -5,3 +5,7 @@
   gap: 2.5rem;
   padding: 1.25rem;
 }
+
+.error {
+  color: red;
+}

@@ -1,38 +1,39 @@
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
-import { auth } from "../../config/firebase";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../config/firebase";
+import { logInSchema, TLoginSchema } from "../../constants/types";
 import styles from "./LoginForm.module.css";
-
-const schema = z.object({
-  email: z.string().email(),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters." }),
-});
-
-type LoginFormData = z.infer<typeof schema>;
 
 const LoginForm = () => {
   const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
   const {
     control,
     handleSubmit,
     formState: { isValid },
-  } = useForm<LoginFormData>({
-    resolver: zodResolver(schema),
+  } = useForm<TLoginSchema>({
+    resolver: zodResolver(logInSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: LoginFormData) => {
+  const onSubmit = async (data: TLoginSchema) => {
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -72,17 +73,32 @@ const LoginForm = () => {
         control={control}
         name="password"
         render={({ field, fieldState }) => (
-          <TextField
+          <OutlinedInput
             {...field}
             type="password"
             error={!!fieldState?.error}
-            helperText={fieldState?.error?.message}
             label="Password"
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label={
+                    showPassword ? "hide the password" : "display the password"
+                  }
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <FontAwesomeIcon icon={faEyeSlash} />
+                  ) : (
+                    <FontAwesomeIcon icon={faEye} />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            }
           />
         )}
       />
 
-      {error && <p>{error}</p>}
+      {error && <p className={styles.errorMessage}>{error}</p>}
 
       <Button
         disabled={!isValid}

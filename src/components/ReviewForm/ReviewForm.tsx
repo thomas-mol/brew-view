@@ -12,30 +12,17 @@ import { MobileDatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
 import * as Coffee from "../../constants/enums";
 import { marks } from "../../utils/objects/marks";
 import CropInput from "../CropInput/CropInput";
 import styles from "./ReviewForm.module.css";
-
-const schema = z.object({
-  title: z
-    .string()
-    .min(3, { message: "Title should be at least 3 characters" }),
-  roast: z.nativeEnum(Coffee.Roast),
-  type: z.nativeEnum(Coffee.Type),
-  location: z.string(),
-  score: z.number().min(1).max(5),
-  date: z.instanceof(dayjs as unknown as typeof Dayjs),
-});
-
-export type ReviewFormData = z.infer<typeof schema>;
+import { reviewSchema, TReviewSchema } from "../../constants/types";
 
 interface Props {
   isEditing?: boolean;
-  initialData?: ReviewFormData;
+  initialData?: TReviewSchema;
   initialImageUrl?: string;
-  onSubmit: (data: ReviewFormData, image?: File) => void;
+  onSubmit: (data: TReviewSchema, image?: File) => void;
 }
 
 const ReviewForm = ({
@@ -49,7 +36,7 @@ const ReviewForm = ({
     handleSubmit,
     reset,
     formState: { isValid },
-  } = useForm<ReviewFormData>({
+  } = useForm<TReviewSchema>({
     defaultValues: {
       title: initialData?.title || "",
       roast: initialData?.roast || Coffee.Roast.MEDIUM,
@@ -58,7 +45,7 @@ const ReviewForm = ({
       score: initialData?.score || 1,
       date: initialData?.date ? dayjs(initialData.date) : dayjs(),
     },
-    resolver: zodResolver(schema),
+    resolver: zodResolver(reviewSchema),
   });
 
   const [imageUpload, setImageUpload] = useState<File>();
@@ -68,7 +55,7 @@ const ReviewForm = ({
     setImageUpload(croppedFile);
   };
 
-  const handleFormSubmit = (data: ReviewFormData) => {
+  const handleFormSubmit = (data: TReviewSchema) => {
     onSubmit(data, imageUpload);
 
     if (!isEditing) {

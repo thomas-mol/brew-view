@@ -1,51 +1,48 @@
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, TextField } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   updateProfile,
 } from "firebase/auth";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
 import { auth } from "../../config/firebase";
 import { useAddUser } from "../../hooks/useUsers";
 import User from "../../interfaces/user";
-import { useState } from "react";
 import styles from "./SignUpForm.module.css";
-
-const schema = z.object({
-  email: z.string().email(),
-  name: z.string(),
-  password: z
-    .string()
-    .min(8, { message: "Your password must be at least 8 characters long" })
-    .max(20, {
-      message: "Your password can not contain more than 20 characters.",
-    }),
-});
-
-type SignUpFormData = z.infer<typeof schema>;
+import { signUpSchema, TSignUpSchema } from "../../constants/types";
 
 const SignUpForm = () => {
+  // ! Implement error handling
+  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const { mutate, isLoading } = useAddUser();
+
   const {
     control,
     handleSubmit,
-    formState: { isValid },
-  } = useForm<SignUpFormData>({
-    resolver: zodResolver(schema),
+    formState: { errors, isValid, isSubmitting },
+    reset,
+  } = useForm<TSignUpSchema>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: "",
       name: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
-  const { mutate, isLoading } = useAddUser();
-
-  // ! Implement error handling
-  const [error, setError] = useState<string | null>(null);
-
-  const onSubmit = async (data: SignUpFormData) => {
+  const onSubmit = async (data: TSignUpSchema) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -92,7 +89,6 @@ const SignUpForm = () => {
         render={({ field, fieldState }) => (
           <TextField
             {...field}
-            required
             error={!!fieldState?.error}
             helperText={fieldState?.error?.message}
             label="Email"
@@ -109,7 +105,6 @@ const SignUpForm = () => {
         render={({ field, fieldState }) => (
           <TextField
             {...field}
-            required
             error={!!fieldState?.error}
             helperText={fieldState?.error?.message}
             label="Name"
@@ -124,12 +119,43 @@ const SignUpForm = () => {
         control={control}
         name="password"
         render={({ field, fieldState }) => (
+          <OutlinedInput
+            {...field}
+            type={showPassword ? "text" : "password"}
+            error={!!fieldState?.error}
+            label="Password"
+            disabled={isLoading}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label={
+                    showPassword ? "hide the password" : "display the password"
+                  }
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <FontAwesomeIcon icon={faEyeSlash} />
+                  ) : (
+                    <FontAwesomeIcon icon={faEye} />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        )}
+      />
+
+      {/* CONFIRM PASSWORD */}
+      <Controller
+        control={control}
+        name="confirmPassword"
+        render={({ field, fieldState }) => (
           <TextField
             {...field}
-            required
+            type="password"
             error={!!fieldState?.error}
             helperText={fieldState?.error?.message}
-            label="Password"
+            label="Confirm Password"
             disabled={isLoading}
           />
         )}
@@ -138,8 +164,8 @@ const SignUpForm = () => {
       {error && <p className={styles.errorMessage}>{error}</p>}
 
       <Button
-        disabled={!isValid || isLoading}
-        variant="outlined"
+        disabled={isLoading || isSubmitting}
+        variant="contained"
         type="submit"
         size="large"
       >

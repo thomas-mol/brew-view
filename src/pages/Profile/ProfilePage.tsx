@@ -1,26 +1,19 @@
 import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import AnimatedPage from "../../components/AnimatedPage";
-import { auth } from "../../config/firebase";
 import CustomImage from "../../components/CustomImage";
+import { auth } from "../../config/firebase";
 import styles from "./ProfilePage.module.css";
 
 const ProfilePage = () => {
-  const navigate = useNavigate();
-  const [user, setUser] = useState(auth.currentUser);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(setUser);
-    return () => unsubscribe();
-  }, []);
+  const [user] = useState(auth.currentUser);
 
   const handleLogout = async () => {
     try {
       await auth.signOut();
-      navigate("/");
     } catch (error) {
       console.error("Error logging out:", error);
+      alert("Failed to log out. Please try again.");
     }
   };
 
