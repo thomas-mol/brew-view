@@ -9,13 +9,15 @@ A personal React-based project where users can add reviews and pictures of their
 - Vercel
 - Vite
 - Framer Motion
+- Zod
+- Material UI
 
 ## Todo List
 
 Style:
-- [ ] Log in / Sign up page
+- [x] Log in / Sign up page
 - [ ] Profile page
-- [ ] Add style variables
+- [x] Add style variables
 - [ ] Page transitions
 
 Function:
