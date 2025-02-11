@@ -22,7 +22,6 @@ import styles from "./SignUpForm.module.css";
 import { signUpSchema, TSignUpSchema } from "../../constants/types";
 
 const SignUpForm = () => {
-  // ! Implement error handling
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const { mutate, isLoading } = useAddUser();
@@ -30,7 +29,7 @@ const SignUpForm = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { isSubmitting },
     reset,
   } = useForm<TSignUpSchema>({
     resolver: zodResolver(signUpSchema),
@@ -68,6 +67,12 @@ const SignUpForm = () => {
         favorites: [],
       };
       mutate({ toAdd: userToAdd, id: user.uid });
+      reset({
+        email: "",
+        name: "",
+        password: "",
+        confirmPassword: "",
+      });
     } catch (error: any) {
       if (error.code === "auth/email-already-in-use") {
         setError("This email is already in use. Please choose another.");

@@ -40,10 +40,10 @@ const LoginForm = () => {
         data.email,
         data.password
       );
-      if (userCredential) {
-        console.log("User logged in to firebase:", userCredential);
+      if (userCredential.user) {
+        console.log("User logged in to firebase:", userCredential.user);
         setError(null);
-        navigate("/", { replace: true }); // Navigate to the main app
+        navigate("/", { replace: true });
       }
     } catch (error: any) {
       console.error("Error signing up:", error.message);
@@ -75,7 +75,7 @@ const LoginForm = () => {
         render={({ field, fieldState }) => (
           <OutlinedInput
             {...field}
-            type="password"
+            type={showPassword ? "text" : "password"}
             error={!!fieldState?.error}
             label="Password"
             endAdornment={

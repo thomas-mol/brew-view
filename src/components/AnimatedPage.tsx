@@ -26,7 +26,9 @@ const AnimatedPage = ({ children, title, className }: Props) => {
       {title && (
         <h2
           style={{
-            padding: "1rem 1.5rem",
+            backgroundColor: "#f2f2f2",
+            borderBottom: "0.05rem solid #8c8c8c",
+            padding: "1rem",
             fontSize: "1.5rem",
           }}
         >
