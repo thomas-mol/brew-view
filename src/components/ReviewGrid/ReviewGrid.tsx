@@ -54,7 +54,7 @@ const ReviewGrid = ({ reviews, favorites }: Props) => {
           </motion.div>
         ))
       ) : (
-        <div className={styles.notFound}>No reviews found..</div>
+        <div className={styles.notFound}>No reviews found.</div>
       )}
     </motion.div>
   );

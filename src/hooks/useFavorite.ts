@@ -23,7 +23,10 @@ export const useAddFavorite = (reviewId: string) => {
         console.log(`Review ${reviewId} added to user ${userId}'s favorites`);
       }
     },
-    onSuccess: () => queryClient.invalidateQueries(["reviews"]),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["reviews"]);
+      queryClient.invalidateQueries(["user"]);
+    },
     onError: (error) => console.error("Error updating favorite: ", error),
   });
 };
