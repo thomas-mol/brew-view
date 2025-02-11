@@ -39,12 +39,10 @@ const LoginForm = () => {
         data.email,
         data.password
       );
-      if (userCredential.user.emailVerified) {
-        console.log("User logged in to firebase.");
+      if (userCredential) {
+        console.log("User logged in to firebase:", userCredential);
         setError(null);
         navigate("/", { replace: true }); // Navigate to the main app
-      } else {
-        alert("Please verify your email address first!");
       }
     } catch (error: any) {
       console.error("Error signing up:", error.message);

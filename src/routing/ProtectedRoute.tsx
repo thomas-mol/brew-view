@@ -12,7 +12,7 @@ const ProtectedRoute = ({ children }: Props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if ((!loading && !user) || (!loading && !user?.emailVerified)) {
+    if (!loading && !user) {
       navigate("/login", { replace: true });
     }
   }, [navigate, user, loading]);

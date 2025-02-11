@@ -135,7 +135,7 @@ const SignUpForm = () => {
         )}
       />
 
-      {error && <p>{error}</p>}
+      {error && <p className={styles.errorMessage}>{error}</p>}
 
       <Button
         disabled={!isValid || isLoading}

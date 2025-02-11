@@ -5,6 +5,7 @@ import AnimatedPage from "../../components/AnimatedPage";
 import { useReview } from "../../hooks/useReviews";
 import NotFoundPage from "../NotFound/NotFoundPage";
 import styles from "./EditReviewPage.module.css";
+import { useEffect } from "react";
 
 const EditReviewPage = () => {
   const navigate = useNavigate();
@@ -15,7 +16,9 @@ const EditReviewPage = () => {
   }
   const { data: review, isLoading, error } = useReview(id);
 
-  if (error || !review) navigate("/404");
+  useEffect(() => {
+    if (error) navigate("/404");
+  }, [error, navigate]);
 
   return (
     <>
@@ -24,7 +27,7 @@ const EditReviewPage = () => {
           <Oval color="grey" strokeWidth={5} secondaryColor="lightgrey" />
         </div>
       ) : (
-        <AnimatedPage title="Edit Review">
+        <AnimatedPage title="Review Details">
           <div className={styles.container}>
             <TextField
               id="standard-read-only-input"

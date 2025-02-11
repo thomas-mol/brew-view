@@ -8,7 +8,7 @@ const LoginPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
 
   return (
-    <Container className={styles.container}>
+    <div className={styles.container}>
       <Card variant="outlined" className={styles.card}>
         <h2>{isSignUp ? "Sign Up" : "Login"}</h2>
         {isSignUp ? <SignUpForm /> : <LoginForm />}
@@ -18,7 +18,7 @@ const LoginPage = () => {
           </Button>
         </Box>
       </Card>
-    </Container>
+    </div>
   );
 };
 

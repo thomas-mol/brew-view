@@ -10,14 +10,10 @@ import {
 } from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import dayjs, { Dayjs } from "dayjs";
-import { Timestamp } from "firebase/firestore";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
-import { auth } from "../../config/firebase";
 import * as Coffee from "../../constants/enums";
-import { useAddReview } from "../../hooks/useReviews";
-import Review from "../../interfaces/review";
 import { marks } from "../../utils/objects/marks";
 import CropInput from "../CropInput/CropInput";
 import styles from "./ReviewForm.module.css";
@@ -33,9 +29,21 @@ const schema = z.object({
   date: z.instanceof(dayjs as unknown as typeof Dayjs),
 });
 
-type ReviewFormData = z.infer<typeof schema>;
+export type ReviewFormData = z.infer<typeof schema>;
 
-const ReviewForm = () => {
+interface Props {
+  isEditing?: boolean;
+  initialData?: ReviewFormData;
+  initialImageUrl?: string;
+  onSubmit: (data: ReviewFormData, image?: File) => void;
+}
+
+const ReviewForm = ({
+  isEditing,
+  initialData,
+  initialImageUrl,
+  onSubmit,
+}: Props) => {
   const {
     control,
     handleSubmit,
@@ -43,12 +51,12 @@ const ReviewForm = () => {
     formState: { isValid },
   } = useForm<ReviewFormData>({
     defaultValues: {
-      title: "",
-      roast: Coffee.Roast.MEDIUM,
-      type: Coffee.Type.FLAT_WHITE,
-      location: "",
-      score: 1,
-      date: dayjs(),
+      title: initialData?.title || "",
+      roast: initialData?.roast || Coffee.Roast.MEDIUM,
+      type: initialData?.type || Coffee.Type.FLAT_WHITE,
+      location: initialData?.location || "",
+      score: initialData?.score || 1,
+      date: initialData?.date ? dayjs(initialData.date) : dayjs(),
     },
     resolver: zodResolver(schema),
   });
@@ -60,26 +68,10 @@ const ReviewForm = () => {
     setImageUpload(croppedFile);
   };
 
-  const { mutate } = useAddReview();
+  const handleFormSubmit = (data: ReviewFormData) => {
+    onSubmit(data, imageUpload);
 
-  const onSubmit = (data: ReviewFormData) => {
-    try {
-      const userId = auth.currentUser?.uid;
-      if (!userId) throw new Error("User not authenticated");
-
-      const dataWithUserId = {
-        ...data,
-        uid: userId,
-        date: Timestamp.fromDate(data.date.toDate()),
-      } as Review;
-
-      // To add: Image size and type validation
-      if (imageUpload) {
-        mutate({ image: imageUpload, toAdd: dataWithUserId });
-      } else {
-        console.log("No image provided.");
-      }
-
+    if (!isEditing) {
       reset({
         title: "",
         roast: Coffee.Roast.MEDIUM,
@@ -88,16 +80,13 @@ const ReviewForm = () => {
         score: 1,
         date: dayjs(),
       });
-
       setImageUpload(undefined);
       setResetImageInput(true);
-    } catch (error) {
-      console.error("Error adding review:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+    <form onSubmit={handleSubmit(handleFormSubmit)} className={styles.form}>
       <Controller
         control={control}
         name="title"
@@ -192,10 +181,20 @@ const ReviewForm = () => {
         )}
       />
 
-      <CropInput
-        onCropComplete={handleCropImage}
-        resetInput={resetImageInput}
-      />
+      {!isEditing ? (
+        <CropInput
+          onCropComplete={handleCropImage}
+          resetInput={resetImageInput}
+        />
+      ) : (
+        initialImageUrl && (
+          <img
+            src={initialImageUrl}
+            alt="Current Review"
+            className={styles.previewImage}
+          />
+        )
+      )}
 
       <Button
         disabled={!isValid}
@@ -203,7 +202,7 @@ const ReviewForm = () => {
         type="submit"
         size="large"
       >
-        Add Review
+        {isEditing ? "Save Changes" : "Add Review"}
       </Button>
     </form>
   );
