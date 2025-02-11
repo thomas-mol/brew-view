@@ -47,6 +47,10 @@ a {
 :root {
   --color-primary: #634832;
   --color-secondary: #dbc1ac;
+  --color-white: #f4f3f2;
+  --color-light-grey: #d3d3d3;
+  --color-grey: #6f6f6f;
+  --color-black: #333333;
 
   font-family: Arial, Helvetica, sans-serif;
   font-family: "Nunito Sans", sans-serif;

@@ -6,8 +6,8 @@
   grid-template-columns: repeat(4, 1fr);
   width: 100vw;
   overflow-x: hidden;
-  background-color: #f2f2f2;
-  border-top: 0.05rem solid #8c8c8c;
+  background-color: var(--color-white);
+  border-top: 0.05rem solid var(--color-grey);
   height: 4rem;
 
   font-family: Arial, Helvetica, sans-serif;
@@ -32,7 +32,7 @@
   }
 
   .link {
-    color: #8c8c8c;
+    color: var(--color-grey);
   }
 
   .active {

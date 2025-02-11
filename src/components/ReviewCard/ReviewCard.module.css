@@ -1,6 +1,6 @@
 .card {
   display: grid;
-  background-color: #f2f2f2;
+  background-color: var(--color-white);
   grid-template-columns: 1fr 1.618fr auto;
   box-shadow: 0 0.25rem 0.5rem rgb(0, 0, 0, 0.15);
   border-radius: 0.25rem;
@@ -58,7 +58,7 @@
 .date {
   font-size: 0.625rem;
   font-style: italic;
-  color: gray;
+  color: var(--color-grey);
 }
 
 .score {
@@ -69,7 +69,7 @@
   overflow: hidden;
 
   em {
-    color: gray;
+    color: var(--color-grey);
     font-size: 0.75rem;
     font-style: italic;
     padding-left: 0.25rem;
@@ -81,7 +81,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  color: #d3d3d3;
+  color: var(--color-grey);
   font-size: 1.25em;
   cursor: pointer;
 
@@ -91,15 +91,15 @@
 
   .settingsButton {
     color: var(--color-secondary);
-    border-bottom: 0.1rem solid #d3d3d3;
-    border-left: 0.1rem solid #d3d3d3;
+    border-bottom: 0.1rem solid var(--color-light-grey);
+    border-left: 0.1rem solid var(--color-light-grey);
     border-radius: 0 0 0 0.25rem;
   }
 
   .favoriteButton {
-    color: #d3d3d3;
-    border-top: 0.1rem solid #d3d3d3;
-    border-left: 0.1rem solid #d3d3d3;
+    color: var(--color-grey);
+    border-top: 0.1rem solid var(--color-light-grey);
+    border-left: 0.1rem solid var(--color-light-grey);
     border-radius: 0.25rem 0 0 0;
 
     .favorite {

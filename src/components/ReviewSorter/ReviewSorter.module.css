@@ -2,12 +2,12 @@
   display: grid;
   align-content: center;
   padding: 1rem 0.75rem;
-  background-color: #f2f2f2;
+  background-color: var(--color-white);
   z-index: 1;
 }
 
 .option {
   margin-left: auto;
-  color: #8c8c8c;
+  color: var(--color-grey);
   font-size: small;
 }

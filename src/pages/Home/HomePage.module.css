@@ -8,7 +8,7 @@
 .container {
   display: grid;
   grid-template-columns: 1fr;
-  border-bottom: 0.05rem solid #8c8c8c;
+  border-bottom: 0.05rem solid var(--color-grey);
 }
 
 @media (min-width: 768px) {
