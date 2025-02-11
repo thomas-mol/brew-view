@@ -5,16 +5,16 @@ import {
   faHeart as fullHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase";
 import { useAddFavorite } from "../../hooks/useFavorite";
 import Review from "../../interfaces/review";
-import { timestampToString } from "../../utils/TimestampToString";
+import { timestampToString } from "../../utils/timeStampToString";
 import CustomImage from "../CustomImage";
 import StarScore from "../Score/StarScore";
 import styles from "./ReviewCard.module.css";
-import { useState } from "react";
 
 interface Props {
   review: Review;
