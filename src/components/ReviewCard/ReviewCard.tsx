@@ -1,19 +1,20 @@
 import { faHeart as emptyHeart } from "@fortawesome/free-regular-svg-icons";
 import {
   faPenToSquare,
+  faSpinner,
   faHeart as fullHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
-import { useState } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../../config/firebase";
+import { auth } from "../../config/firebase";
+import { useAddFavorite } from "../../hooks/useFavorite";
 import Review from "../../interfaces/review";
+import { timestampToString } from "../../utils/TimestampToString";
 import CustomImage from "../CustomImage";
 import StarScore from "../Score/StarScore";
 import styles from "./ReviewCard.module.css";
-import { timestampToString } from "../../utils/TimestampToString";
+import { useState } from "react";
 
 interface Props {
   review: Review;
@@ -22,31 +23,14 @@ interface Props {
 
 const ReviewCard = ({ review, isFavorite }: Props) => {
   const navigate = useNavigate();
+  const { mutate: toggleFavorite, isLoading } = useAddFavorite(review.id);
   const [favorite, setFavorite] = useState(isFavorite);
 
-  // Put this block of code in the API class / Utility class
-
-  // #region Add to Favorite
-  const toggleFavorite = async (id: string) => {
-    const userDoc = doc(db, "users", id);
-
-    if (favorite) {
-      setFavorite(!favorite);
-      await updateDoc(userDoc, {
-        favorites: arrayRemove(review.id),
-      }).then(() =>
-        console.log(`Removed review ${review.id} from user's favorites`)
-      );
-    } else {
-      setFavorite(!favorite);
-      await updateDoc(userDoc, {
-        favorites: arrayUnion(review.id),
-      }).then(() =>
-        console.log(`Added review ${review.id} to user's favorites`)
-      );
-    }
+  const handleToggle = () => {
+    if (!auth.currentUser) return;
+    toggleFavorite({ userId: auth.currentUser.uid, isFavorite: favorite });
+    setFavorite((prev) => !prev);
   };
-  // #endregion
 
   return (
     <div className={styles.card}>
@@ -71,10 +55,12 @@ const ReviewCard = ({ review, isFavorite }: Props) => {
           <FontAwesomeIcon icon={faPenToSquare} />
         </div>
         <div
-          onClick={() => toggleFavorite(auth.currentUser?.uid || " ")}
+          onClick={handleToggle}
           className={`${styles.button} ${styles.favoriteButton}`}
         >
-          {favorite ? (
+          {isLoading ? (
+            <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
+          ) : favorite ? (
             <FontAwesomeIcon icon={fullHeart} className={styles.favorite} />
           ) : (
             <FontAwesomeIcon icon={emptyHeart} />

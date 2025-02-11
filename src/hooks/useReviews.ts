@@ -27,11 +27,8 @@ interface MutationProps {
 export const useAddReview = () => {
   const queryClient = useQueryClient();
   return useMutation<Review, Error, MutationProps>({
-    mutationFn: ({ image, toAdd }: MutationProps) =>
-      apiClient.postWithImage(toAdd, image),
-    onSuccess: () => {
-      queryClient.invalidateQueries(["reviews"]);
-    },
+    mutationFn: ({ image, toAdd }) => apiClient.postWithImage(toAdd, image),
+    onSuccess: () => queryClient.invalidateQueries(["reviews"]),
   });
 };
 

@@ -26,7 +26,7 @@ interface MutationProps {
 export const useAddUser = () => {
   const queryClient = useQueryClient();
   return useMutation<User, Error, MutationProps>({
-    mutationFn: ({ toAdd, id }: MutationProps) => apiClient.post(toAdd, id),
+    mutationFn: ({ toAdd, id }) => apiClient.post(toAdd, id),
     onSuccess: () => {
       queryClient.invalidateQueries(["users"]);
     },
