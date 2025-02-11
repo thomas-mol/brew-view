@@ -8,6 +8,7 @@ export const useReviews = (options?: Filters<Review>, ids?: string[]) => {
   return useQuery<Review[], Error>({
     queryKey: ["reviews", options, ids],
     queryFn: () => apiClient.getAll(options, ids),
+    staleTime: 5 * 60 * 1000,
   });
 };
 
