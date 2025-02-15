@@ -22,10 +22,12 @@ import { useAddUser } from "../../hooks/useUsers";
 import User from "../../interfaces/user";
 import styles from "./SignUpForm.module.css";
 import { signUpSchema, TSignUpSchema } from "../../constants/types";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
   const { mutate, isLoading } = useAddUser();
 
   const {
@@ -75,6 +77,7 @@ const SignUpForm = () => {
         password: "",
         confirmPassword: "",
       });
+      navigate("/", { replace: true });
     } catch (error: any) {
       if (error.code === "auth/email-already-in-use") {
         setError("This email is already in use. Please choose another.");
