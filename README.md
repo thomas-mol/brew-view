@@ -25,4 +25,6 @@ Function:
 - [ ] Favorites functionality
 - [ ] Edit reviews
 - [ ] Pop up modals for (un)successful uploading
+- [ ] Add Edit Review Form
+- [ ] Add Review Detail Page
   

@@ -21,66 +21,64 @@ const EditReviewPage = () => {
   }, [error, navigate]);
 
   return (
-    <>
+    <AnimatedPage title="Review Details">
       {isLoading ? (
-        <div className="loading-indicator">
+        <div className={styles.loading}>
           <Oval color="grey" strokeWidth={5} secondaryColor="lightgrey" />
         </div>
       ) : (
-        <AnimatedPage title="Review Details">
-          <div className={styles.container}>
-            <TextField
-              id="standard-read-only-input"
-              label="Title"
-              defaultValue={review?.title}
-              variant="standard"
-              slotProps={{
-                input: {
-                  readOnly: true,
-                },
-              }}
-            />
-            <TextField
-              id="standard-read-only-input"
-              label="Roast"
-              defaultValue={review?.roast}
-              variant="standard"
-              slotProps={{
-                input: {
-                  readOnly: true,
-                },
-              }}
-            />
-            <TextField
-              id="standard-read-only-input"
-              label="Location"
-              defaultValue={review?.location}
-              variant="standard"
-              slotProps={{
-                input: {
-                  readOnly: true,
-                },
-              }}
-            />
-            <TextField
-              id="standard-read-only-input"
-              label="Type"
-              defaultValue={review?.type}
-              variant="standard"
-              slotProps={{
-                input: {
-                  readOnly: true,
-                },
-              }}
-            />
-            <p>Score: {review?.score}</p>
-            <Button onClick={() => navigate("/")} variant="contained">
-              Back
-            </Button>
-          </div>
-        </AnimatedPage>
+        <div className={styles.container}>
+          <TextField
+            id="standard-read-only-input"
+            label="Title"
+            defaultValue={review?.title}
+            variant="standard"
+            slotProps={{
+              input: {
+                readOnly: true,
+              },
+            }}
+          />
+          <TextField
+            id="standard-read-only-input"
+            label="Roast"
+            defaultValue={review?.roast}
+            variant="standard"
+            slotProps={{
+              input: {
+                readOnly: true,
+              },
+            }}
+          />
+          <TextField
+            id="standard-read-only-input"
+            label="Location"
+            defaultValue={review?.location}
+            variant="standard"
+            slotProps={{
+              input: {
+                readOnly: true,
+              },
+            }}
+          />
+          <TextField
+            id="standard-read-only-input"
+            label="Type"
+            defaultValue={review?.type}
+            variant="standard"
+            slotProps={{
+              input: {
+                readOnly: true,
+              },
+            }}
+          />
+          <p>Score: {review?.score}</p>
+          <Button onClick={() => navigate("/")} variant="contained">
+            Back
+          </Button>
+        </div>
       )}
-    </>
+    </AnimatedPage>
   );
 };
 
