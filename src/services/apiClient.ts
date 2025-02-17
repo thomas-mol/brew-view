@@ -2,6 +2,7 @@ import {
   DocumentData,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -35,6 +36,7 @@ class APIClient<T extends { id?: string } & DocumentData> {
   async getAll(options?: Filters<T>, ids?: string[]): Promise<T[]> {
     try {
       const querySnapshot = await getDocs(collection(db, this.collectionRef));
+
       let data: T[] = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...(doc.data() as T),
@@ -55,6 +57,7 @@ class APIClient<T extends { id?: string } & DocumentData> {
   async getById(id: string): Promise<T> {
     try {
       const documentSnapshot = await getDoc(doc(db, this.collectionRef, id));
+
       if (documentSnapshot.exists()) {
         return { id: documentSnapshot.id, ...(documentSnapshot.data() as T) };
       } else {
@@ -83,31 +86,6 @@ class APIClient<T extends { id?: string } & DocumentData> {
     }
   }
 
-  async postWithImage(toAdd: T, imageFile: File): Promise<T> {
-    try {
-      const imageRef = ref(storage, `images/${v4()}`);
-      await uploadBytes(imageRef, imageFile);
-      console.log("Image uploaded!" + imageRef);
-
-      const downloadUrl = await getDownloadURL(imageRef);
-
-      const documentWithUrl = {
-        photo_url: downloadUrl,
-        ...toAdd,
-      };
-      const docRef = await addDoc(
-        collection(db, this.collectionRef),
-        documentWithUrl
-      );
-
-      console.log("Document added with id:", docRef.id);
-      return { ...documentWithUrl, id: docRef.id };
-    } catch (error) {
-      console.log("Error uploading image or document:", error);
-      throw error;
-    }
-  }
-
   async update(toUpdate: T) {
     try {
       if (!toUpdate.id) throw new Error("Document ID is required for update.");
@@ -119,6 +97,14 @@ class APIClient<T extends { id?: string } & DocumentData> {
     } catch (error) {
       console.log("Error updating document:", error);
       throw error;
+    }
+  }
+
+  async delete(id: string): Promise<void> {
+    try {
+      await deleteDoc(doc(db, this.collectionRef, id));
+    } catch (error) {
+      console.log(error);
     }
   }
 }

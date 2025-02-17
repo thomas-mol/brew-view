@@ -10,6 +10,7 @@ import "./theme/global.css";
 import { AuthProvider } from "./hooks/useAuth";
 import router from "./routing/routes.tsx";
 import theme from "./theme/theme.ts";
+import { AlertProvider } from "./components/AlertContext.tsx";
 
 const queryClient = new QueryClient();
 
@@ -19,7 +20,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <ThemeProvider theme={theme}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <AuthProvider>
-            <RouterProvider router={router} />
+            <AlertProvider>
+              <RouterProvider router={router} />
+            </AlertProvider>
           </AuthProvider>
         </LocalizationProvider>
       </ThemeProvider>

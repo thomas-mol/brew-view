@@ -46,6 +46,7 @@ const ReviewForm = ({
       date: initialData?.date ? dayjs(initialData.date) : dayjs(),
     },
     resolver: zodResolver(reviewSchema),
+    mode: "onTouched",
   });
 
   const [imageUpload, setImageUpload] = useState<File>();

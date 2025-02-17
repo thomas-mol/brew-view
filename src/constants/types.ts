@@ -7,13 +7,12 @@ import * as Coffee from "../constants/enums";
 export const signUpSchema = z
   .object({
     email: z.string().email(),
-    name: z.string(),
+    name: z
+      .string()
+      .min(3, { message: "Name must be at least 3 characters long." }),
     password: z
       .string()
-      .min(8, { message: "Your password must be at least 8 characters long" })
-      .max(20, {
-        message: "Your password can not contain more than 20 characters.",
-      }),
+      .min(8, { message: "Your password must be at least 8 characters long." }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -27,9 +26,7 @@ export type TSignUpSchema = z.infer<typeof signUpSchema>;
 
 export const logInSchema = z.object({
   email: z.string().email(),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters." }),
+  password: z.string().min(8),
 });
 
 export type TLoginSchema = z.infer<typeof logInSchema>;

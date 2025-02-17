@@ -17,11 +17,12 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase";
 import { logInSchema, TLoginSchema } from "../../constants/types";
 import styles from "./LoginForm.module.css";
+import { useAlert } from "../AlertContext";
 
 const LoginForm = () => {
-  const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { showAlert } = useAlert();
 
   const {
     control,
@@ -44,12 +45,14 @@ const LoginForm = () => {
       );
       if (userCredential.user) {
         console.log("User logged in to firebase:", userCredential.user);
-        setError(null);
         navigate("/", { replace: true });
       }
     } catch (error: any) {
-      console.error("Error signing up:", error.message);
-      setError(error.message);
+      showAlert(
+        `Error logging in: ${error.message}`,
+        { vertical: "top", horizontal: "center" },
+        "error"
+      );
     }
   };
 
@@ -74,14 +77,13 @@ const LoginForm = () => {
       <Controller
         control={control}
         name="password"
-        render={({ field, fieldState }) => (
+        render={({ field }) => (
           <FormControl>
             <InputLabel htmlFor="password-login">Password</InputLabel>
             <OutlinedInput
               {...field}
               id="password-login"
               type={showPassword ? "text" : "password"}
-              error={!!fieldState?.error}
               label="Password"
               endAdornment={
                 <InputAdornment position="end">
@@ -105,8 +107,6 @@ const LoginForm = () => {
           </FormControl>
         )}
       />
-
-      {error && <p className={styles.errorMessage}>{error}</p>}
 
       <Button
         disabled={!isValid}

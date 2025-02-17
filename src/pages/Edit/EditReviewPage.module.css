@@ -1,7 +1,9 @@
 .container {
   display: flex;
+  max-width: 640px;
   background-color: var(--color-white);
   flex-direction: column;
   gap: 2rem;
-  padding: 1rem;
+  padding: 2rem;
+  margin: 1rem auto 0;
 }

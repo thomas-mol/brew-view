@@ -7,7 +7,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase";
 import { useAddFavorite } from "../../hooks/useFavorite";
 import Review from "../../interfaces/review";
@@ -39,7 +39,7 @@ const ReviewCard = ({ review, isFavorite }: Props) => {
       </div>
       <div className={styles.main}>
         <div>
-          <h2>{review.title}</h2>
+          <Link to={`/review/${review.id}`}>{review.title}</Link>
           <p>{review.type + " / " + review.roast + " Roast"}</p>
         </div>
         <div className={styles.score}>

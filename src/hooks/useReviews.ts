@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Review from "../interfaces/review";
-import APIClient, { Filters } from "../services/apiClient";
+import { Filters } from "../services/apiClient";
+import ReviewAPIClient from "../services/reviewApi";
 
-const apiClient = new APIClient<Review>("reviews");
+const apiClient = new ReviewAPIClient();
 
 export const useReviews = (options?: Filters<Review>, ids?: string[]) => {
   return useQuery<Review[], Error>({

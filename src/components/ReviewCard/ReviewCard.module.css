@@ -35,7 +35,7 @@
   gap: 0.5rem;
   padding: 0.75rem 1rem;
 
-  h2,
+  a,
   p {
     display: -webkit-box;
     line-clamp: 1;
@@ -44,7 +44,7 @@
     overflow: hidden;
   }
 
-  h2 {
+  a {
     font-weight: bold;
     color: var(--color-primary);
   }

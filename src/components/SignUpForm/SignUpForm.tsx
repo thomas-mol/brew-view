@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   FormControl,
+  FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -43,6 +44,7 @@ const SignUpForm = () => {
       password: "",
       confirmPassword: "",
     },
+    mode: "onChange",
   });
 
   const onSubmit = async (data: TSignUpSchema) => {
@@ -157,6 +159,9 @@ const SignUpForm = () => {
                 </InputAdornment>
               }
             />
+            {!!fieldState.error && (
+              <FormHelperText error>{fieldState.error.message}</FormHelperText>
+            )}
           </FormControl>
         )}
       />

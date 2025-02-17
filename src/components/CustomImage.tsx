@@ -13,7 +13,7 @@ const CustomImage = ({ src }: Props) => {
       <img
         style={{ display: imageLoaded ? "block" : "none" }}
         src={src}
-        alt="https://placehold.co/400x400?text=No\nImage"
+        alt={src}
         onLoad={() => setImageLoaded(true)}
       />
       {!imageLoaded && <Skeleton height={200} width={200} />}
