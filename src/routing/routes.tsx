@@ -1,14 +1,13 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import AddReviewPage from "../pages/Add/AddReviewPage";
-import EditReviewPage from "../pages/Edit/EditReviewPage";
+import DetailPage from "../pages/detail/DetailPage";
 import FavoritesPage from "../pages/Favorites/FavoritesPage";
 import HomePage from "../pages/Home/HomePage";
 import LoginPage from "../pages/Login/LoginPage";
 import NotFoundPage from "../pages/NotFound/NotFoundPage";
 import ProfilePage from "../pages/Profile/ProfilePage";
 import ProtectedRoute from "./ProtectedRoute";
-import DetailPage from "../pages/detail/DetailPage";
 
 const router = createBrowserRouter([
   {

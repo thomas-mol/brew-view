@@ -11,10 +11,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../config/firebase";
 import { useAddFavorite } from "../../hooks/useFavorite";
 import Review from "../../interfaces/review";
-import { timestampToString } from "../../utils/timeStampToString";
 import CustomImage from "../CustomImage";
 import StarScore from "../Score/StarScore";
 import styles from "./ReviewCard.module.css";
+import { timestampToString } from "../../utils/timeStampToString";
 
 interface Props {
   review: Review;

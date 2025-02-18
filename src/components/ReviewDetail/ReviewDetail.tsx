@@ -1,17 +1,17 @@
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Avatar, Button, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
+import { auth } from "../../config/firebase";
 import { replySchema, TReplySchema } from "../../constants/types";
 import { useAddReply } from "../../hooks/useReplies";
 import Reply from "../../interfaces/reply";
 import Review from "../../interfaces/review";
-import { timestampToString } from "../../utils/timeStampToString";
-import styles from "./ReviewDetail.module.css";
-import { auth } from "../../config/firebase";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CustomImage from "../CustomImage";
 import ReplyItem from "../ReplyItem/ReplyItem";
+import styles from "./ReviewDetail.module.css";
+import { timestampToString } from "../../utils/timeStampToString";
 
 interface Props {
   review: Review;
