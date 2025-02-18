@@ -8,10 +8,10 @@ import { replySchema, TReplySchema } from "../../constants/types";
 import { useAddReply } from "../../hooks/useReplies";
 import Reply from "../../interfaces/reply";
 import Review from "../../interfaces/review";
+import timeToString from "../../utils/timeToString.ts";
 import CustomImage from "../CustomImage";
 import ReplyItem from "../ReplyItem/ReplyItem";
 import styles from "./ReviewDetail.module.css";
-import timeStampToString from "../../utils/timeStampToString.ts";
 
 interface Props {
   review: Review;
@@ -53,7 +53,7 @@ const ReviewDetail = ({ review, replies }: Props) => {
           <div className={styles.header}>
             <div>
               <h3>{review.title}</h3>
-              <p>{timeStampToString(review.date)}</p>
+              <p>{timeToString(review.date)}</p>
             </div>
             {/* USER PROFILE PICTURE */}
             <Avatar src={review.uid} />
