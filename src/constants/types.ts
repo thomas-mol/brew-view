@@ -45,3 +45,11 @@ export const reviewSchema = z.object({
 });
 
 export type TReviewSchema = z.infer<typeof reviewSchema>;
+
+// * ADD / EDIT REPLY
+
+export const replySchema = z.object({
+  text: z.string().min(1, { message: "Reply can not be empty." }),
+});
+
+export type TReplySchema = z.infer<typeof replySchema>;

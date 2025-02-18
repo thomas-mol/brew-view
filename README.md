@@ -16,8 +16,8 @@ A personal React-based project where users can add reviews and pictures of their
 
 Style:
 - [x] Log in / Sign up page
-- [ ] Profile page
 - [x] Add style variables
+- [ ] Profile page
 - [ ] Page transitions
 
 Function:
@@ -27,4 +27,5 @@ Function:
 - [ ] Pop up modals for (un)successful uploading
 - [ ] Add Edit Review Form
 - [ ] Add Review Detail Page
+- [ ] Add Description to Review
   

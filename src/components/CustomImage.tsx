@@ -3,9 +3,10 @@ import Skeleton from "react-loading-skeleton";
 
 interface Props {
   src?: string;
+  width?: number;
 }
 
-const CustomImage = ({ src }: Props) => {
+const CustomImage = ({ src, width = 200 }: Props) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
@@ -16,7 +17,7 @@ const CustomImage = ({ src }: Props) => {
         alt={src}
         onLoad={() => setImageLoaded(true)}
       />
-      {!imageLoaded && <Skeleton height={200} width={200} />}
+      {!imageLoaded && <Skeleton height={width} width={width} />}
     </>
   );
 };

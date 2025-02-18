@@ -8,6 +8,7 @@ import LoginPage from "../pages/Login/LoginPage";
 import NotFoundPage from "../pages/NotFound/NotFoundPage";
 import ProfilePage from "../pages/Profile/ProfilePage";
 import ProtectedRoute from "./ProtectedRoute";
+import DetailPage from "../pages/detail/DetailPage";
 
 const router = createBrowserRouter([
   {
@@ -36,7 +37,7 @@ const router = createBrowserRouter([
       },
       {
         path: "review/:id",
-        element: <EditReviewPage />,
+        element: <DetailPage />,
       },
       {
         path: "*",

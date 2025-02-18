@@ -9,9 +9,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { v4 } from "uuid";
-import { db, storage } from "../config/firebase";
+import { db } from "../config/firebase";
 
 export type Filters<T> = Partial<{
   [K in keyof T]: T[K];

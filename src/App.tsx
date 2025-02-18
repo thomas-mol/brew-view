@@ -18,7 +18,7 @@ const App = () => {
           <Outlet />
         </AnimatePresence>
       </div>
-      <NavigationBar />;
+      <NavigationBar />
     </>
   );
 };
