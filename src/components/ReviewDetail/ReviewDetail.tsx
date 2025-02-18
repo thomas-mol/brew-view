@@ -11,7 +11,7 @@ import Review from "../../interfaces/review";
 import CustomImage from "../CustomImage";
 import ReplyItem from "../ReplyItem/ReplyItem";
 import styles from "./ReviewDetail.module.css";
-import { timestampToString } from "../../utils/timeStampToString";
+import timeStampToString from "../../utils/timeStampToString";
 
 interface Props {
   review: Review;
@@ -53,7 +53,7 @@ const ReviewDetail = ({ review, replies }: Props) => {
           <div className={styles.header}>
             <div>
               <h3>{review.title}</h3>
-              <p>{timestampToString(review.date)}</p>
+              <p>{timeStampToString(review.date)}</p>
             </div>
             {/* USER PROFILE PICTURE */}
             <Avatar src={review.uid} />

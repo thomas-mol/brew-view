@@ -14,7 +14,7 @@ import Review from "../../interfaces/review";
 import CustomImage from "../CustomImage";
 import StarScore from "../Score/StarScore";
 import styles from "./ReviewCard.module.css";
-import { timestampToString } from "../../utils/timeStampToString";
+import timeStampToString from "../../utils/timeStampToString";
 
 interface Props {
   review: Review;
@@ -45,7 +45,7 @@ const ReviewCard = ({ review, isFavorite }: Props) => {
         <div className={styles.score}>
           <StarScore score={review.score} /> <em>{review.score}</em>
         </div>
-        <div className={styles.date}>{timestampToString(review.date)}</div>
+        <div className={styles.date}>{timeStampToString(review.date)}</div>
       </div>
       <div className={styles.actionButtonsContainer}>
         <div
