@@ -1,8 +1,7 @@
-import { faHeart as emptyHeart } from "@fortawesome/free-regular-svg-icons";
 import {
+  faHeart,
   faPenToSquare,
   faSpinner,
-  faHeart as fullHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
@@ -43,11 +42,12 @@ const ReviewCard = ({ review, isFavorite }: Props) => {
           <p>{review.type + " / " + review.roast + " Roast"}</p>
         </div>
         <div className={styles.score}>
-          <StarScore score={review.score} /> <em>{review.score}</em>
+          <StarScore score={review.score} />
+          <p>{review.score}</p>
         </div>
         <div className={styles.date}>{timeToString(review.date)}</div>
       </div>
-      <div className={styles.actionButtonsContainer}>
+      <div className={styles.buttonContainer}>
         <div
           onClick={() => navigate(`/review/${review.id}`)}
           className={`${styles.button} ${styles.settingsButton}`}
@@ -61,9 +61,9 @@ const ReviewCard = ({ review, isFavorite }: Props) => {
           {isLoading ? (
             <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
           ) : favorite ? (
-            <FontAwesomeIcon icon={fullHeart} className={styles.favorite} />
+            <FontAwesomeIcon icon={faHeart} className={styles.favorite} />
           ) : (
-            <FontAwesomeIcon icon={emptyHeart} />
+            <FontAwesomeIcon icon={faHeart} />
           )}
         </div>
       </div>

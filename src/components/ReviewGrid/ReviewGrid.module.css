@@ -1,23 +1,19 @@
 .grid {
   display: grid;
-  place-items: center;
-  flex-wrap: wrap;
   gap: 1rem;
   padding: 1rem;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 520px) {
   .grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
   }
 }
 
-@media (min-width: 1024px) {
+@media screen and (min-width: 1024px) {
   .grid {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
