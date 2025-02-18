@@ -33,3 +33,13 @@ export const useAddReply = () => {
     },
   });
 };
+
+export const useDeleteReply = () => {
+  const queryClient = useQueryClient();
+  return useMutation<void, Error, string>({
+    mutationFn: (id) => apiClient.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["replies"]);
+    },
+  });
+};

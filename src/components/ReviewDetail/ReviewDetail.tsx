@@ -7,11 +7,11 @@ import Reply from "../../interfaces/reply";
 import Review from "../../interfaces/review";
 import { timestampToString } from "../../utils/timeStampToString";
 import styles from "./ReviewDetail.module.css";
-import ReplyItem from "./ReplyItem";
 import { auth } from "../../config/firebase";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CustomImage from "../CustomImage";
+import ReplyItem from "../ReplyItem/ReplyItem";
 
 interface Props {
   review: Review;
@@ -59,7 +59,7 @@ const ReviewDetail = ({ review, replies }: Props) => {
             <Avatar src={review.uid} />
           </div>
           <div className={styles.content}>
-            <ul className={styles.comments}>
+            <ul className={styles.replyList}>
               {replies.length === 0 && <li>Nobody has replied yet...</li>}
               {replies.map((reply, index) => (
                 <ReplyItem reply={reply} key={index} />
@@ -73,6 +73,7 @@ const ReviewDetail = ({ review, replies }: Props) => {
               render={({ field, fieldState }) => (
                 <TextField
                   {...field}
+                  placeholder="Leave a reply.."
                   error={!!fieldState?.error}
                   sx={{ flex: 1 }}
                 />
