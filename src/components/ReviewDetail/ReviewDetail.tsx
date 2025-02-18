@@ -11,7 +11,7 @@ import Review from "../../interfaces/review";
 import CustomImage from "../CustomImage";
 import ReplyItem from "../ReplyItem/ReplyItem";
 import styles from "./ReviewDetail.module.css";
-import timeStampToString from "../../utils/timeStampToString";
+import timeStampToString from "../../utils/timeStampToString.ts";
 
 interface Props {
   review: Review;
